@@ -41,9 +41,8 @@ function reddenPage() {
     });
 
     const beforelowest = content.children[3];
-    const lowest = content.children[4];
 
-    const applier = lowest.children[0].children[1].innerHTML;
+    const applier = content.children[4].children[0].children[1].innerHTML;
 
     let country = beforelowest.children[3].textContent;
 
