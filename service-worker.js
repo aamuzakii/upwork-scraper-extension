@@ -105,7 +105,8 @@ function searchUtil() {
 
     // const fee = content.children[0];
 
-    const stacks = section.querySelector('[data-test="TokenClamp JobAttrs"]');
+    const stacks =
+      section.querySelector('[data-test="TokenClamp JobAttrs"]') || [];
 
     const skillCollection = [];
 
