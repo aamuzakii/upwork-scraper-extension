@@ -61,7 +61,13 @@ function reddenPage() {
   });
 
   console.log(arrOfJobs);
-  fetch(`http://localhost:3000/?data=${JSON.stringify(arrOfJobs)}`);
+  fetch("http://localhost:3000/store", {
+    method: "POST",
+    // headers: {
+    //   "Content-Type": "application/json",
+    // },
+    body: JSON.stringify(arrOfJobs),
+  });
 }
 
 chrome.action.onClicked.addListener((tab) => {
