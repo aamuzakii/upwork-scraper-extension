@@ -20,7 +20,7 @@ function reddenPage() {
 
     const link = section.children[0].children[1].children[1].children[0].href
       .replace(/\s+/g, " ")
-      .split("/")[2];
+      .split("?")[0];
 
     const content = section.children[1];
 
@@ -42,7 +42,8 @@ function reddenPage() {
 
     const applier = content.children[4].children[0].children[1].innerHTML;
 
-    let country = content.children[3].children[3].textContent;
+    let countryPar = content.children[3].children[3];
+    country = countryPar ? countryPar.textContent : "";
 
     country = country.replace(/\s/g, "");
 
@@ -58,6 +59,8 @@ function reddenPage() {
 
     arrOfJobs.push(newData);
   });
+
+  console.log(arrOfJobs);
 }
 
 chrome.action.onClicked.addListener((tab) => {
