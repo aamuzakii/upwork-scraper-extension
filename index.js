@@ -10,8 +10,8 @@ app.use((req, res, next) => {
 
 // Define a sample route
 app.get("/", (req, res) => {
-  // res.send("Hello, this is your Node.js API!");
-  console.log(req);
+  console.log(JSON.stringify(req.query));
+  res.send("Hello, this is your Node.js API!");
 });
 
 // Start the server
