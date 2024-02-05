@@ -6,7 +6,6 @@ function reddenPage() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    console.log("init", i);
     const date =
       section.children[0].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
@@ -61,7 +60,6 @@ function reddenPage() {
     arrOfJobs.push(newData);
   });
 
-  console.log(arrOfJobs);
   fetch("http://localhost:3000/store", {
     method: "POST",
     // headers: {
@@ -79,51 +77,43 @@ function searchUtil() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    console.log("init", i);
     const date =
       section.children[1].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
         " "
       );
 
-    const title =
-      section.children[1].children[1].children[1].textContent.replace(
-        /\s+/g,
-        " "
-      );
+    const title = section
+      .querySelector('[data-test="UpCLineClamp"]')
+      .textContent.replace(/\s+/g, " ");
 
-    const link = section.children[1].children[1].children[1].children[0].href
-      .replace(/\s+/g, " ")
-      .split("?")[0];
+    const link = section.querySelector('[data-test="UpCLineClamp"]').children[0]
+      .children[0].children[0].href;
+
+    const desc = section
+      .querySelector('[data-test="UpCLineClamp JobDescription"]')
+      .textContent.replace(/\s+/g, " ");
 
     const content = section.children[2];
 
-    const fee = content.children[0];
-    const desc =
-      content.children[1].children[0].children[0].children[0].textContent.replace(
-        /\s+/g,
-        " "
-      );
+    // const fee = content.children[0];
 
-    console.log(1);
-    const fofo = content.children[2].children;
-
-    const skill = fofo[0].children[0].children[2].children;
+    const stacks = section.querySelector('[data-test="TokenClamp JobAttrs"]');
 
     const skillCollection = [];
 
-    Array.from(skill).forEach((element) => {
+    Array.from(stacks).forEach((element) => {
       skillCollection.push(element.textContent);
     });
-    console.log(2);
 
-    const applier = content.children[4].children[0].children[1].innerHTML;
+    const applier = section.querySelector('[data-test="proposals-tier"]')
+      .children[1].textContent;
 
-    let countryPar = content.children[3].children[3];
-    country = countryPar ? countryPar.textContent : "";
-    console.log(3);
+    const location = section.querySelector(
+      '[data-test="location"]'
+    ).textContent;
 
-    country = country.replace(/\s/g, "");
+    let country = location.replace(/\s/g, "");
 
     const newData = {
       url: link,
@@ -138,7 +128,6 @@ function searchUtil() {
     arrOfJobs.push(newData);
   });
 
-  console.log(arrOfJobs);
   fetch("http://localhost:3000/store", {
     method: "POST",
     // headers: {
