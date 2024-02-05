@@ -3,6 +3,51 @@ const app = express();
 const port = 3000;
 const bodyParser = require("body-parser");
 
+const { Sequelize, DataTypes } = require("sequelize");
+
+const sequelize = new Sequelize("postgres://developer:123@localhost:5432/olx"); // Example for postgres
+
+const Job = sequelize.define(
+  "Job",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    url: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+    },
+    title: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
+    stack: {
+      type: DataTypes.STRING,
+    },
+    country: {
+      type: DataTypes.STRING,
+    },
+    candidates: {
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    date: {
+      type: DataTypes.STRING,
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+    },
+  },
+  {
+    tableName: "Job",
+    timestamps: false,
+  }
+);
 // Middleware to log incoming requests
 app.use((req, res, next) => {
   console.log(`${new Date().toLocaleString()} - ${req.method} ${req.url}`);
@@ -38,6 +83,14 @@ app.post("/store", async (req, res) => {
 
   const requestBody = JSON.parse(body);
   console.log(requestBody);
+
+  sequelize
+    .sync()
+    .then(() => Job.create({ url: "2323" }))
+    .then((user) => {
+      console.log(user.toJSON());
+    });
+
   res.send("Hello, this is your Node.js API!");
 });
 
