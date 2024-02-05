@@ -110,7 +110,7 @@ function searchUtil() {
 
     const skillCollection = [];
 
-    Array.from(stacks).forEach((element) => {
+    Array.from(stacks.children).forEach((element) => {
       skillCollection.push(element.textContent);
     });
 
