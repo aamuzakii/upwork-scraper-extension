@@ -77,6 +77,7 @@ function searchUtil() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
+    console.log(i);
     const date =
       section.children[1].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
@@ -109,9 +110,9 @@ function searchUtil() {
     const applier = section.querySelector('[data-test="proposals-tier"]')
       .children[1].textContent;
 
-    const location = section.querySelector(
-      '[data-test="location"]'
-    ).textContent;
+    const locationPar = section.querySelector('[data-test="location"]');
+
+    const location = locationPar ? locationPar.textContent : "";
 
     let country = location.replace(/\s/g, "");
 
