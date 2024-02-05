@@ -72,31 +72,31 @@ function reddenPage() {
 }
 
 function searchUtil() {
-  const jobTileListElement = document.querySelector(
-    '[data-test="job-tile-list"]'
-  );
+  let jobTileListElement =
+    document.querySelector('[data-test="job-tile-list"]') ??
+    document.querySelector('[data-test="JobsList"]');
 
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
     console.log("init", i);
     const date =
-      section.children[0].children[1].children[0].children[0].innerHTML.replace(
+      section.children[1].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
         " "
       );
 
     const title =
-      section.children[0].children[1].children[1].textContent.replace(
+      section.children[1].children[1].children[1].textContent.replace(
         /\s+/g,
         " "
       );
 
-    const link = section.children[0].children[1].children[1].children[0].href
+    const link = section.children[1].children[1].children[1].children[0].href
       .replace(/\s+/g, " ")
       .split("?")[0];
 
-    const content = section.children[1];
+    const content = section.children[2];
 
     const fee = content.children[0];
     const desc =
@@ -104,6 +104,8 @@ function searchUtil() {
         /\s+/g,
         " "
       );
+
+    console.log(1);
     const fofo = content.children[2].children;
 
     const skill = fofo[0].children[0].children[2].children;
@@ -113,11 +115,13 @@ function searchUtil() {
     Array.from(skill).forEach((element) => {
       skillCollection.push(element.textContent);
     });
+    console.log(2);
 
     const applier = content.children[4].children[0].children[1].innerHTML;
 
     let countryPar = content.children[3].children[3];
     country = countryPar ? countryPar.textContent : "";
+    console.log(3);
 
     country = country.replace(/\s/g, "");
 
