@@ -6,6 +6,7 @@ function reddenPage() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
+    console.info(i);
     const date =
       section.children[0].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
@@ -17,6 +18,8 @@ function reddenPage() {
         /\s+/g,
         " "
       );
+
+    console.info(title);
 
     const link = section.children[0].children[1].children[1].children[0].href
       .replace(/\s+/g, " ")
@@ -32,7 +35,9 @@ function reddenPage() {
       );
     const fofo = content.children[2].children;
 
-    const skill = fofo[0].children[0].children[2].children;
+    const skillParent = fofo[0].children[0].children[2];
+
+    const skill = skillParent ? skillParent.children : [];
 
     const skillCollection = [];
 
@@ -40,12 +45,15 @@ function reddenPage() {
       skillCollection.push(element.textContent);
     });
 
-    const applier = content.children[4].children[0].children[1].innerHTML;
+    const applier = section.querySelector(
+      '[data-test="proposals"]'
+    ).textContent;
 
-    let countryPar = content.children[3].children[3];
-    country = countryPar ? countryPar.textContent : "";
+    const locationPar = section.querySelector('[data-test="client-country"]');
 
-    country = country.replace(/\s/g, "");
+    const location = locationPar ? locationPar.textContent : "";
+
+    let country = location.replace(/\s/g, "");
 
     const newData = {
       url: link,
@@ -77,7 +85,7 @@ function searchUtil() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    console.log(i);
+    console.info(i);
     const date = section
       .querySelector('[data-test="JobTileHeader"]')
       .children[0].children[1].textContent.replace(/\s+/g, " ");
