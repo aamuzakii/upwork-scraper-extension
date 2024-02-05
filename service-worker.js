@@ -61,6 +61,7 @@ function reddenPage() {
   });
 
   console.log(arrOfJobs);
+  fetch(`http://localhost:3000/?data=${JSON.stringify(arrOfJobs)}`);
 }
 
 chrome.action.onClicked.addListener((tab) => {
