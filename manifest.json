@@ -1,6 +1,13 @@
 {
   "name": "Page Redder",
-  "action": {},
+  "action": {
+    "default_icon": {
+      "32": "alo.png",
+      "72": "alo.png",
+      "128": "alo.png",
+      "512": "alo.png"
+    }
+  },
   "manifest_version": 3,
   "version": "0.1",
   "description": "Turns the page red when you click the icon",

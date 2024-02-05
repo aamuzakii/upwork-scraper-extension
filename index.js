@@ -85,17 +85,37 @@ app.post("/store", async (req, res) => {
   console.log(requestBody);
 
   sequelize
-    .sync()
-    .then(() => {
-      return Job.bulkCreate(requestBody);
-    })
-    .then((createdJobs) => {
-      createdJobs.forEach((job) => {
-        console.log(job.toJSON());
+    .transaction(async (t) => {
+      const promises = requestBody.map(async (jobData) => {
+        try {
+          // Check if a record with the same 'url' already exists
+          const existingJob = await Job.findOne({
+            where: { url: jobData.url },
+            transaction: t,
+          });
+
+          if (existingJob) {
+            // Update the existing record if it already exists
+            await existingJob.update(jobData, { transaction: t });
+            console.log(`Job with URL ${jobData.url[0]} updated.`);
+          } else {
+            // Create a new record if it doesn't exist
+            await Job.create(jobData, { transaction: t });
+            console.log(`Job with URL ${jobData.url[0]} created.`);
+          }
+        } catch (error) {
+          console.error(`Error processing job with URL ${jobData.url}:`, error);
+        }
       });
+
+      // Execute all promises in parallel
+      await Promise.all(promises);
+    })
+    .then(() => {
+      console.log("Transaction committed");
     })
     .catch((error) => {
-      console.error("Error creating jobs:", error);
+      console.error("Error:", error);
     });
 
   res.send("Hello, this is your Node.js API!");

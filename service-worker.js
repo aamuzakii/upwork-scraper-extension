@@ -6,6 +6,7 @@ function reddenPage() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
+    console.log("init", i);
     const date =
       section.children[0].children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
