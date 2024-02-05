@@ -86,9 +86,16 @@ app.post("/store", async (req, res) => {
 
   sequelize
     .sync()
-    .then(() => Job.create({ url: "2323" }))
-    .then((user) => {
-      console.log(user.toJSON());
+    .then(() => {
+      return Job.bulkCreate(requestBody);
+    })
+    .then((createdJobs) => {
+      createdJobs.forEach((job) => {
+        console.log(job.toJSON());
+      });
+    })
+    .catch((error) => {
+      console.error("Error creating jobs:", error);
     });
 
   res.send("Hello, this is your Node.js API!");
