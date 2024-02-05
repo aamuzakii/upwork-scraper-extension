@@ -40,11 +40,9 @@ function reddenPage() {
       skillCollection.push(element.textContent);
     });
 
-    const beforelowest = content.children[3];
-
     const applier = content.children[4].children[0].children[1].innerHTML;
 
-    let country = beforelowest.children[3].textContent;
+    let country = content.children[3].children[3].textContent;
 
     country = country.replace(/\s/g, "");
 
