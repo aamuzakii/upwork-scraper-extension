@@ -78,11 +78,9 @@ function searchUtil() {
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
     console.log(i);
-    const date =
-      section.children[1].children[1].children[0].children[0].innerHTML.replace(
-        /\s+/g,
-        " "
-      );
+    const date = section
+      .querySelector('[data-test="JobTileHeader"]')
+      .children[0].children[1].textContent.replace(/\s+/g, " ");
 
     const title = section
       .querySelector('[data-test="UpCLineClamp"]')
