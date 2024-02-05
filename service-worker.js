@@ -71,11 +71,20 @@ function reddenPage() {
   });
 }
 
+function searchUtil() {
+  console.log(123);
+}
+
 chrome.action.onClicked.addListener((tab) => {
-  if (!tab.url.includes("chrome://")) {
+  if (tab.url.includes("find-work")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: reddenPage,
+    });
+  } else {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: searchUtil,
     });
   }
 });
