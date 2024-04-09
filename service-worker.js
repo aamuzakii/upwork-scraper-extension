@@ -27,7 +27,6 @@ function reddenPage() {
 
     const content = section.children[1];
 
-    const fee = content.children[0];
     const desc =
       content.children[1].children[0].children[0].children[0].textContent.replace(
         /\s+/g,
@@ -55,6 +54,11 @@ function reddenPage() {
 
     let country = location.replace(/\s/g, "");
 
+    // https://www.upwork.com/nx/find-work/most-recent
+    const fee = section.querySelector(
+      ".text-light.display-inline-block.text-caption"
+    ).textContent;
+
     const newData = {
       url: link,
       title,
@@ -63,6 +67,7 @@ function reddenPage() {
       candidates: applier,
       description: desc,
       date,
+      fee,
     };
 
     arrOfJobs.push(newData);
@@ -110,6 +115,8 @@ function searchUtil() {
 
     const skillCollection = [];
 
+    stacks.children = stacks.children ?? [];
+
     Array.from(stacks.children).forEach((element) => {
       skillCollection.push(element.textContent);
     });
@@ -123,6 +130,10 @@ function searchUtil() {
 
     let country = location.replace(/\s/g, "");
 
+    const fee = section.querySelector(
+      '[data-test="JobInfoFeatures"]'
+    ).textContent;
+
     const newData = {
       url: link,
       title,
@@ -131,6 +142,7 @@ function searchUtil() {
       candidates: applier,
       description: desc,
       date,
+      fee,
     };
 
     arrOfJobs.push(newData);

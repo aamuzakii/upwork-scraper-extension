@@ -36,6 +36,9 @@ const Job = sequelize.define(
     description: {
       type: DataTypes.STRING,
     },
+    fee: {
+      type: DataTypes.STRING,
+    },
     date: {
       type: DataTypes.STRING,
     },
