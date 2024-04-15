@@ -7,25 +7,30 @@ function reddenPage() {
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
     console.info(i);
+
+    // one section consist of header & content
+
+    const header = section.children[0]
+    const content = section.children[1];
+
     const date =
-      section.children[0].children[1].children[0].children[0].innerHTML.replace(
+      header.children[1].children[0].children[0].innerHTML.replace(
         /\s+/g,
         " "
       );
 
     const title =
-      section.children[0].children[1].children[1].textContent.replace(
+      header.children[1].children[1].textContent.replace(
         /\s+/g,
         " "
       );
 
     console.info(title);
 
-    const link = section.children[0].children[1].children[1].children[0].href
+    const link = header.children[1].children[1].children[0].href
       .replace(/\s+/g, " ")
       .split("?")[0];
 
-    const content = section.children[1];
 
     const desc =
       content.children[1].children[0].children[0].children[0].textContent.replace(
