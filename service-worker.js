@@ -1,4 +1,4 @@
-function reddenPage() {
+function extractFromHomePage() {
   const jobTileListElement = document.querySelector(
     '[data-test="job-tile-list"]'
   );
@@ -87,7 +87,7 @@ function reddenPage() {
   });
 }
 
-function searchUtil() {
+function extractFromSearchPage() {
   let jobTileListElement =
     document.querySelector('[data-test="job-tile-list"]') ??
     document.querySelector('[data-test="JobsList"]');
@@ -166,12 +166,12 @@ chrome.action.onClicked.addListener((tab) => {
   if (tab.url.includes("find-work")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      function: reddenPage,
+      function: extractFromHomePage,
     });
   } else {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      function: searchUtil,
+      function: extractFromSearchPage,
     });
   }
 });
