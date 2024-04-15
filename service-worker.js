@@ -20,15 +20,19 @@ function extractFromHomePage() {
         " "
       );
 
+    const titleElement = meaningfulHeader.children[1]
+
+    // console.log("meaningfulHeader", meaningfulHeader);
+
     const title =
-      meaningfulHeader.children[1].textContent.replace(
+      titleElement.textContent.replace(
         /\s+/g,
         " "
       );
 
     console.info(title);
 
-    const link = meaningfulHeader.children[1].children[0].href
+    const link = titleElement.children[0].href
       .replace(/\s+/g, " ")
       .split("?")[0];
 
