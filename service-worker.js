@@ -12,22 +12,23 @@ function extractFromHomePage() {
 
     const header = section.children[0]
     const content = section.children[1];
+    const meaningfulHeader = header.children[1]
 
     const date =
-      header.children[1].children[0].children[0].innerHTML.replace(
+      meaningfulHeader.children[0].children[0].innerHTML.replace(
         /\s+/g,
         " "
       );
 
     const title =
-      header.children[1].children[1].textContent.replace(
+      meaningfulHeader.children[1].textContent.replace(
         /\s+/g,
         " "
       );
 
     console.info(title);
 
-    const link = header.children[1].children[1].children[0].href
+    const link = meaningfulHeader.children[1].children[0].href
       .replace(/\s+/g, " ")
       .split("?")[0];
 
