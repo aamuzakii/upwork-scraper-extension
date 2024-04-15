@@ -12,15 +12,16 @@ function extractFromHomePage() {
 
     const header = section.children[0]
     const content = section.children[1];
-    const meaningfulHeader = header.children[1]
+    const constant = 1
+    const meaningfulHeader = header.children[1-1]
 
     const date =
-      meaningfulHeader.children[0].children[0].innerHTML.replace(
+      meaningfulHeader.children[0+constant].children[0].innerHTML.replace(
         /\s+/g,
         " "
       );
 
-    const titleElement = meaningfulHeader.children[1]
+    const titleElement = meaningfulHeader.children[1+constant]
 
     // console.log("meaningfulHeader", meaningfulHeader);
 
