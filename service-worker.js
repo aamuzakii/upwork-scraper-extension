@@ -6,7 +6,6 @@ function extractFromHomePage() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    console.info(i);
 
     // one section consist of header & content
 
@@ -31,7 +30,6 @@ function extractFromHomePage() {
         " "
       );
 
-    console.info(title);
 
     const link = titleElement.children[0].href
       .replace(/\s+/g, " ")
@@ -61,9 +59,8 @@ function extractFromHomePage() {
 
     const locationPar = section.querySelector('[data-test="client-country"]');
 
-    const location = locationPar ? locationPar.textContent : "";
-
-    let country = location.replace(/\s/g, "");
+    const location = locationPar ? locationPar.textContent : "";    
+    country = location.trim().replace(/\s+/g, ' ')
 
     // https://www.upwork.com/nx/find-work/most-recent
     const fee = section.querySelector(
@@ -84,7 +81,7 @@ function extractFromHomePage() {
     arrOfJobs.push(newData);
   });
 
-  fetch("http://localhost:3000/store", {
+  fetch("http://localhost:3000/api/store", {
     method: "POST",
     // headers: {
     //   "Content-Type": "application/json",
@@ -101,7 +98,6 @@ function extractFromSearchPage() {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    console.info(i);
     const date = section
       .querySelector('[data-test="JobTileHeader"]')
       .children[0].children[1].textContent.replace(/\s+/g, " ");
@@ -159,7 +155,7 @@ function extractFromSearchPage() {
     arrOfJobs.push(newData);
   });
 
-  fetch("http://localhost:3000/store", {
+  fetch("http://localhost:3000/api/store", {
     method: "POST",
     // headers: {
     //   "Content-Type": "application/json",
@@ -181,3 +177,16 @@ chrome.action.onClicked.addListener((tab) => {
     });
   }
 });
+
+
+// chrome.action.onClicked.addEventListener('click', async () => {
+//   console.log(123);
+//   const currentTab = await chrome.tabs.query({ active: true });
+//   const leftTabIndex = currentTab[0].index - 1;
+
+//   if (leftTabIndex >= 0) {
+//     chrome.tabs.update(leftTabIndex, { active: true });
+//   } else {
+//     console.log("No tabs to the left");
+//   }
+// });
