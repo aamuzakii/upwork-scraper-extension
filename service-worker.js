@@ -138,7 +138,7 @@ function extractFromSearchPage() {
     let country = location.replace(/\s/g, "");
 
     const fee = section.querySelector(
-      '[data-test="JobInfoFeatures"]'
+      '[data-test="JobInfo"]'
     ).textContent;
 
     const newData = {
