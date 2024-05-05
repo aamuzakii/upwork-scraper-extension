@@ -81,7 +81,7 @@ function extractFromHomePage() {
     arrOfJobs.push(newData);
   });
 
-  fetch("http://localhost:3000/api/store", {
+  fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
     //   "Content-Type": "application/json",
@@ -155,7 +155,7 @@ function extractFromSearchPage() {
     arrOfJobs.push(newData);
   });
 
-  fetch("http://localhost:3000/api/store", {
+  fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
     //   "Content-Type": "application/json",

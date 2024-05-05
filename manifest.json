@@ -1,16 +1,16 @@
 {
-  "name": "Page Redder",
+  "name": "Upwork Spider - Alpha Version",
   "action": {
     "default_icon": {
-      "32": "alo.png",
-      "72": "alo.png",
-      "128": "alo.png",
-      "512": "alo.png"
+      "32": "green.png",
+      "72": "green.png",
+      "128": "green.png",
+      "512": "green.png"
     }
   },
   "manifest_version": 3,
   "version": "0.1",
-  "description": "Turns the page red when you click the icon",
+  "description": "Create better Upwork UI",
   "permissions": ["activeTab", "scripting"],
   "background": {
     "service_worker": "service-worker.js"
