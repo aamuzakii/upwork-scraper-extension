@@ -1,4 +1,5 @@
-function extractFromHomePage() {
+function extractFromHomePage(os) {
+  console.log(os);
   const jobTileListElement = document.querySelector(
     '[data-test="job-tile-list"]'
   );
@@ -91,7 +92,7 @@ function extractFromHomePage() {
   });
 }
 
-function extractFromSearchPage() {
+function extractFromSearchPage(os) {
   let jobTileListElement =
     document.querySelector('[data-test="job-tile-list"]') ??
     document.querySelector('[data-test="JobsList"]');
@@ -168,17 +169,24 @@ function extractFromSearchPage() {
 
 chrome.action.onClicked.addListener((tab) => {
   console.log("init extension");
-  if (tab.url.includes("find-work")) {
+  console.log(chrome.runtime.getPlatformInfo());
+
+  chrome.runtime.getPlatformInfo().then((x) => {
+    console.log(x.os);
+      if (tab.url.includes("find-work")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: extractFromHomePage,
+      args: [x.os],
     });
   } else {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: extractFromSearchPage,
+      args: [x.os],
     });
   }
+  })
 });
 
 
