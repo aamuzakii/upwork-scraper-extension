@@ -81,6 +81,7 @@ function extractFromHomePage() {
     arrOfJobs.push(newData);
   });
 
+  console.log("fetching...");
   fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
@@ -155,6 +156,7 @@ function extractFromSearchPage() {
     arrOfJobs.push(newData);
   });
 
+  console.log("fetching...");
   fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
@@ -165,6 +167,7 @@ function extractFromSearchPage() {
 }
 
 chrome.action.onClicked.addListener((tab) => {
+  console.log("init extension");
   if (tab.url.includes("find-work")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
