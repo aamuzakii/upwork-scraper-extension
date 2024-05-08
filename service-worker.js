@@ -1,5 +1,4 @@
 function extractFromHomePage(os) {
-  console.log(os);
   const jobTileListElement = document.querySelector(
     '[data-test="job-tile-list"]'
   );
@@ -23,7 +22,6 @@ function extractFromHomePage(os) {
     
     const date = dateElement.innerHTML.trim()
 
-    console.log(date);
 
 
     // const date =
@@ -42,9 +40,18 @@ function extractFromHomePage(os) {
       );
 
 
-    const link = titleElement.children[0].href
-      .replace(/\s+/g, " ")
-      .split("?")[0];
+      // const linkD = titleElement.children[0].href
+      // .replace(/\s+/g, " ")
+      // .split("?")[0];
+
+      console.log(titleElement.firstChild);
+
+    const link = titleElement.firstChild.href
+    .replace(/\s+/g, " ")
+    .split("?")[0]
+
+
+
 
 
     const desc =
@@ -64,9 +71,10 @@ function extractFromHomePage(os) {
       skillCollection.push(element.textContent);
     });
 
-    const applier = section.querySelector(
+    const applierElement = section.querySelector(
       '[data-test="proposals"]'
-    ).textContent;
+    );
+    const applier = applierElement ? applierElement.textContent : 'no proposal yet'
 
     const locationPar = section.querySelector('[data-test="client-country"]');
 
@@ -91,10 +99,10 @@ function extractFromHomePage(os) {
 
     console.log(newData);
 
+
     arrOfJobs.push(newData);
   });
 
-  console.log("fetching...");
   fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
@@ -142,8 +150,11 @@ function extractFromSearchPage(os) {
       skillCollection.push(element.textContent);
     });
 
-    const applier = section.querySelector('[data-test="proposals-tier"]')
-      .children[1].textContent;
+    const applierElement = section.querySelector('[data-test="proposals-tier"]')
+      .children[1];
+    
+    const applier = applierElement ? applierElement.textContent : 'no proposal yet'
+
 
     const locationPar = section.querySelector('[data-test="location"]');
 
@@ -169,7 +180,6 @@ function extractFromSearchPage(os) {
     arrOfJobs.push(newData);
   });
 
-  console.log("fetching...");
   fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
@@ -180,11 +190,8 @@ function extractFromSearchPage(os) {
 }
 
 chrome.action.onClicked.addListener((tab) => {
-  console.log("init extension");
-  console.log(chrome.runtime.getPlatformInfo());
 
   chrome.runtime.getPlatformInfo().then((x) => {
-    console.log(x.os);
       if (tab.url.includes("find-work")) {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
@@ -203,13 +210,11 @@ chrome.action.onClicked.addListener((tab) => {
 
 
 // chrome.action.onClicked.addEventListener('click', async () => {
-//   console.log(123);
 //   const currentTab = await chrome.tabs.query({ active: true });
 //   const leftTabIndex = currentTab[0].index - 1;
 
 //   if (leftTabIndex >= 0) {
 //     chrome.tabs.update(leftTabIndex, { active: true });
 //   } else {
-//     console.log("No tabs to the left");
 //   }
 // });
