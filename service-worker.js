@@ -13,17 +13,27 @@ function extractFromHomePage(os) {
     const header = section.children[0]
     const content = section.children[1];
     const constant = 1
-    const meaningfulHeader = header.children[1-1]
+    const meaningfulHeader = header.children[1]
+    const x = meaningfulHeader.children[0]
 
-    const date =
-      meaningfulHeader.children[0+constant].children[0].innerHTML.replace(
-        /\s+/g,
-        " "
-      );
+    
+    const dateElement = section.querySelector(
+      '[data-test="posted-on"]'
+    )
+    
+    const date = dateElement.innerHTML.trim()
 
-    const titleElement = meaningfulHeader.children[1+constant]
+    console.log(date);
 
-    // console.log("meaningfulHeader", meaningfulHeader);
+
+    // const date =
+    //   meaningfulHeader.children[0+constant].children[0].innerHTML.replace(
+    //     /\s+/g,
+    //     " "
+    //   );
+
+    // const titleElementD = meaningfulHeader.children[1+constant]
+    const titleElement = dateElement.parentElement.parentElement.children[1]
 
     const title =
       titleElement.textContent.replace(
@@ -78,6 +88,8 @@ function extractFromHomePage(os) {
       date,
       fee,
     };
+
+    console.log(newData);
 
     arrOfJobs.push(newData);
   });
