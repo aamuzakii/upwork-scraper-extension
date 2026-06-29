@@ -1,4 +1,72 @@
+
 function extractFromHomePage(os) {
+  function normalizeFee(fee = '') {
+    const result = {
+      paymentType: null,
+      minRate: null,
+      maxRate: null,
+      fixedBudget: null,
+      experienceLevel: null,
+      duration: null,
+      weeklyHours: null,
+      otherInfo: null,
+    };
+
+    let remaining = fee;
+
+    if (/^Hourly:/i.test(remaining)) {
+      result.paymentType = 'HOURLY';
+      remaining = remaining.replace(/^Hourly:\s*/i, '');
+    } else if (/^Fixed price/i.test(remaining)) {
+      result.paymentType = 'FIXED_PRICE';
+      remaining = remaining.replace(/^Fixed price\s*/i, '');
+    }
+
+    const hourlyMatch = remaining.match(/\$(\d+(?:\.\d+)?)\s*-\s*\$(\d+(?:\.\d+)?)/);
+    if (hourlyMatch) {
+      result.minRate = Math.round(Number(hourlyMatch[1]));
+      result.maxRate = Math.round(Number(hourlyMatch[2]));
+      remaining = remaining.replace(hourlyMatch[0], '');
+    }
+
+    const fixedMatch = remaining.match(/Est\. budget:\s*\$(\d+(?:\.\d+)?)/i);
+    if (fixedMatch) {
+      result.fixedBudget = Math.round(Number(fixedMatch[1]));
+      remaining = remaining.replace(fixedMatch[0], '');
+    }
+
+    const expMatch = remaining.match(/\b(Entry Level|Intermediate|Expert)\b/i);
+    if (expMatch) {
+      result.experienceLevel = {
+        'Entry Level': 'ENTRY_LEVEL',
+        Intermediate: 'INTERMEDIATE',
+        Expert: 'EXPERT',
+      }[expMatch[1]];
+      remaining = remaining.replace(expMatch[0], '');
+    }
+
+    const durationMatch = remaining.match(/Less than 1 month|1 to 3 months|3 to 6 months|More than 6 months/i);
+    if (durationMatch) {
+      result.duration = durationMatch[0];
+      remaining = remaining.replace(durationMatch[0], '');
+    }
+
+    const weeklyMatch = remaining.match(/Less than 30 hrs\/week|30\+ hrs\/week|Not sure/i);
+    if (weeklyMatch) {
+      result.weeklyHours = weeklyMatch[0];
+      remaining = remaining.replace(weeklyMatch[0], '');
+    }
+
+    remaining = remaining
+      .replace(/Est\. time:/gi, '')
+      .replace(/,+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (remaining) result.otherInfo = remaining;
+
+    return result;
+  }
   const jobTileListElement = document.querySelector(
     '[data-test="job-tile-list"]'
   );
@@ -49,6 +117,7 @@ function extractFromHomePage(os) {
       section
         .querySelector('[data-test="JobInfo"]')
         ?.textContent.replace(/\s+/g, ' ').trim() ?? '';
+    const normalizedFee = normalizeFee(fee);
     const newData = {
       url: link,
       title,
@@ -57,7 +126,7 @@ function extractFromHomePage(os) {
       candidates: applier,
       description: desc,
       date,
-      fee,
+      ...normalizedFee,
     };
     arrOfJobs.push(newData);
   });
@@ -71,6 +140,73 @@ function extractFromHomePage(os) {
 }
 
 function extractFromSearchPage(os) {
+  function normalizeFee(fee = '') {
+    const result = {
+      paymentType: null,
+      minRate: null,
+      maxRate: null,
+      fixedBudget: null,
+      experienceLevel: null,
+      duration: null,
+      weeklyHours: null,
+      otherInfo: null,
+    };
+
+    let remaining = fee;
+
+    if (/^Hourly:/i.test(remaining)) {
+      result.paymentType = 'HOURLY';
+      remaining = remaining.replace(/^Hourly:\s*/i, '');
+    } else if (/^Fixed price/i.test(remaining)) {
+      result.paymentType = 'FIXED_PRICE';
+      remaining = remaining.replace(/^Fixed price\s*/i, '');
+    }
+
+    const hourlyMatch = remaining.match(/\$(\d+(?:\.\d+)?)\s*-\s*\$(\d+(?:\.\d+)?)/);
+    if (hourlyMatch) {
+      result.minRate = Math.round(Number(hourlyMatch[1]));
+      result.maxRate = Math.round(Number(hourlyMatch[2]));
+      remaining = remaining.replace(hourlyMatch[0], '');
+    }
+
+    const fixedMatch = remaining.match(/Est\. budget:\s*\$(\d+(?:\.\d+)?)/i);
+    if (fixedMatch) {
+      result.fixedBudget = Math.round(Number(fixedMatch[1]));
+      remaining = remaining.replace(fixedMatch[0], '');
+    }
+
+    const expMatch = remaining.match(/\b(Entry Level|Intermediate|Expert)\b/i);
+    if (expMatch) {
+      result.experienceLevel = {
+        'Entry Level': 'ENTRY_LEVEL',
+        Intermediate: 'INTERMEDIATE',
+        Expert: 'EXPERT',
+      }[expMatch[1]];
+      remaining = remaining.replace(expMatch[0], '');
+    }
+
+    const durationMatch = remaining.match(/Less than 1 month|1 to 3 months|3 to 6 months|More than 6 months/i);
+    if (durationMatch) {
+      result.duration = durationMatch[0];
+      remaining = remaining.replace(durationMatch[0], '');
+    }
+
+    const weeklyMatch = remaining.match(/Less than 30 hrs\/week|30\+ hrs\/week|Not sure/i);
+    if (weeklyMatch) {
+      result.weeklyHours = weeklyMatch[0];
+      remaining = remaining.replace(weeklyMatch[0], '');
+    }
+
+    remaining = remaining
+      .replace(/Est\. time:/gi, '')
+      .replace(/,+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (remaining) result.otherInfo = remaining;
+
+    return result;
+  }
   let jobTileListElement =
     document.querySelector('[data-test="job-tile-list"]') ??
     document.querySelector('[data-test="JobsList"]');
@@ -126,7 +262,7 @@ function extractFromSearchPage(os) {
         .querySelector('[data-test="JobInfo"]')
         ?.textContent.replace(/\s+/g, ' ')
         .trim() ?? '';
-
+    const normalizedFee = normalizeFee(fee);
     const newData = {
       url: link,
       title,
@@ -135,12 +271,10 @@ function extractFromSearchPage(os) {
       candidates: applier,
       description: desc,
       date,
-      fee,
+      ...normalizedFee,
     };
 
     console.log(newData, "data");
-    
-
     arrOfJobs.push(newData);
   });
 
