@@ -1,3 +1,7 @@
+// TODO:
+// currently we do querySelector('[data-test="JobInfo"]') then normalizeFee
+// i suspect we can do more granule query instead of query data-test="JobInfo", so no need to normalizedFee anymore
+
 
 function extractFromHomePage(os) {
   function normalizeFee(fee = '') {
