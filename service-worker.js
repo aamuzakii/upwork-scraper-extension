@@ -41,7 +41,9 @@ function extractFromHomePage(os) {
     const country =
       section
         .querySelector('[data-test="location"] .rr-mask')
-        ?.textContent.replace(/\s+/g, ' ').trim() ?? '';
+        ?.textContent.replace(/^Location\s+/i, '')
+        .replace(/\s+/g, ' ')
+        .trim() ?? '';
     // fee
     const fee =
       section
@@ -115,7 +117,8 @@ function extractFromSearchPage(os) {
     const country =
       section
         .querySelector('[data-test="location"] .rr-mask')
-        ?.textContent.replace(/\s+/g, ' ')
+        ?.textContent.replace(/^Location\s+/i, '')
+        .replace(/\s+/g, ' ')
         .trim() ?? '';
 
     const fee =
