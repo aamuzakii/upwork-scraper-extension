@@ -2,90 +2,51 @@ function extractFromHomePage(os) {
   const jobTileListElement = document.querySelector(
     '[data-test="job-tile-list"]'
   );
-
   const arrOfJobs = [];
-
   Array.from(jobTileListElement.children).forEach((section, i) => {
+    // date
+    const date =
+      section.querySelector('[data-test="job-pubilshed-date"] span')?.textContent
+        .replace(/^Posted\s+/i, '')
+        .trim() ?? '';
+    // title & link
+    const titleLink =
+      section.querySelector('a[data-test*="job-tile-title-link"]') ||
+      section.querySelector('h2 a') ||
+      section.querySelector('a[href*="/jobs/"]');
 
-    // one section consist of header & content
+    console.log('titleLink', titleLink);
 
-    const header = section.children[0]
-    const content = section.children[1];
-    const constant = 1
-    const meaningfulHeader = header.children[1]
-    const x = meaningfulHeader.children[0]
+    const title = titleLink?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
 
-    
-    const dateElement = section.querySelector(
-      '[data-test="posted-on"]'
-    )
-    
-    const date = dateElement.innerHTML.trim()
-
-
-
-    // const date =
-    //   meaningfulHeader.children[0+constant].children[0].innerHTML.replace(
-    //     /\s+/g,
-    //     " "
-    //   );
-
-    // const titleElementD = meaningfulHeader.children[1+constant]
-    const titleElement = dateElement.parentElement.parentElement.children[1]
-
-    const title =
-      titleElement.textContent.replace(
-        /\s+/g,
-        " "
-      );
-
-
-      // const linkD = titleElement.children[0].href
-      // .replace(/\s+/g, " ")
-      // .split("?")[0];
-
-      console.log(titleElement.firstChild);
-
-    const link = titleElement.firstChild.href
-    .replace(/\s+/g, " ")
-    .split("?")[0]
-
-
-
-
-
+    const href = titleLink?.href || titleLink?.getAttribute('href') || '';
+    const link = href
+      ? new URL(href, location.origin).href.split('?')[0]
+      : '';
+    // description
     const desc =
-      content.children[1].children[0].children[0].children[0].textContent.replace(
-        /\s+/g,
-        " "
-      );
-    const fofo = content.children[2].children;
-
-    const skillParent = fofo[0].children[0].children[2];
-
-    const skill = skillParent ? skillParent.children : [];
-
-    const skillCollection = [];
-
-    Array.from(skill).forEach((element) => {
-      skillCollection.push(element.textContent);
-    });
-
-    const applierElement = section.querySelector(
-      '[data-test="proposals"]'
-    );
-    const applier = applierElement ? applierElement.textContent : 'no proposal yet'
-
-    const locationPar = section.querySelector('[data-test="client-country"]');
-
-    const location = locationPar ? locationPar.textContent : "";    
-    country = location.trim().replace(/\s+/g, ' ')
-
-    // https://www.upwork.com/nx/find-work/most-recent
-    const fee = section.querySelector(
-      ".text-light.display-inline-block.text-caption"
-    ).textContent;
-
+      section
+        .querySelector('[data-test="UpCLineClamp JobDescription"] p')
+        ?.textContent.replace(/\s+/g, ' ').trim() ?? '';
+    // skills
+    const skillCollection = Array.from(
+      section.querySelectorAll('[data-test="token"]')
+    ).map((el) => el.textContent.trim());
+    // proposals
+    const applier =
+      section
+        .querySelector('[data-test="proposals-tier"]')
+        ?.textContent.replace(/^Proposals:\s*/i, '').trim() ?? 'no proposal yet';
+    // country
+    const country =
+      section
+        .querySelector('[data-test="location"] .rr-mask')
+        ?.textContent.replace(/\s+/g, ' ').trim() ?? '';
+    // fee
+    const fee =
+      section
+        .querySelector('[data-test="JobInfo"]')
+        ?.textContent.replace(/\s+/g, ' ').trim() ?? '';
     const newData = {
       url: link,
       title,
@@ -96,13 +57,8 @@ function extractFromHomePage(os) {
       date,
       fee,
     };
-
-    console.log(newData);
-
-
     arrOfJobs.push(newData);
   });
-
   fetch("https://upworkui-aamuzakiis-projects.vercel.app/api/store", {
     method: "POST",
     // headers: {
@@ -120,51 +76,53 @@ function extractFromSearchPage(os) {
   const arrOfJobs = [];
 
   Array.from(jobTileListElement.children).forEach((section, i) => {
-    const date = section
-      .querySelector('[data-test="JobTileHeader"]')
-      .children[0].children[1].textContent.replace(/\s+/g, " ");
+    const date =
+      section
+        .querySelector('[data-test="job-pubilshed-date"] span')
+        ?.textContent.replace(/^Posted\s+/i, '')
+        .trim() ?? '';
 
-    const title = section
-      .querySelector('[data-test="UpCLineClamp"]')
-      .textContent.replace(/\s+/g, " ");
+    const titleLink =
+      section.querySelector('a[data-test*="job-tile-title-link"]') ||
+      section.querySelector('h2 a') ||
+      section.querySelector('a[href*="/jobs/"]');
 
-    const link = section.querySelector('[data-test="UpCLineClamp"]').children[0]
-      .children[0].children[0].href;
+    console.log('titleLink', titleLink);
 
-    const desc = section
-      .querySelector('[data-test="UpCLineClamp JobDescription"]')
-      .textContent.replace(/\s+/g, " ");
+    const title = titleLink?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
 
-    const content = section.children[2];
+    const href = titleLink?.href || titleLink?.getAttribute('href') || '';
+    const link = href
+      ? new URL(href, location.origin).href.split('?')[0]
+      : '';
 
-    // const fee = content.children[0];
+    const desc =
+      section
+        .querySelector('[data-test="UpCLineClamp JobDescription"] p')
+        ?.textContent.replace(/\s+/g, ' ')
+        .trim() ?? '';
 
-    const stacks =
-      section.querySelector('[data-test="TokenClamp JobAttrs"]') || [];
+    const skillCollection = Array.from(
+      section.querySelectorAll('[data-test="token"]')
+    ).map((el) => el.textContent.trim());
 
-    const skillCollection = [];
+    const applier =
+      section
+        .querySelector('[data-test="proposals-tier"]')
+        ?.textContent.replace(/^Proposals:\s*/i, '')
+        .trim() ?? 'no proposal yet';
 
-    stacks.children = stacks.children ?? [];
+    const country =
+      section
+        .querySelector('[data-test="location"] .rr-mask')
+        ?.textContent.replace(/\s+/g, ' ')
+        .trim() ?? '';
 
-    Array.from(stacks.children).forEach((element) => {
-      skillCollection.push(element.textContent);
-    });
-
-    const applierElement = section.querySelector('[data-test="proposals-tier"]')
-      .children[1];
-    
-    const applier = applierElement ? applierElement.textContent : 'no proposal yet'
-
-
-    const locationPar = section.querySelector('[data-test="location"]');
-
-    const location = locationPar ? locationPar.textContent : "";
-
-    let country = location.replace(/\s/g, "");
-
-    const fee = section.querySelector(
-      '[data-test="JobInfo"]'
-    ).textContent;
+    const fee =
+      section
+        .querySelector('[data-test="JobInfo"]')
+        ?.textContent.replace(/\s+/g, ' ')
+        .trim() ?? '';
 
     const newData = {
       url: link,
@@ -176,6 +134,9 @@ function extractFromSearchPage(os) {
       date,
       fee,
     };
+
+    console.log(newData, "data");
+    
 
     arrOfJobs.push(newData);
   });
