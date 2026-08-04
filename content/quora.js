@@ -41,16 +41,23 @@ function findPostContainer(link) {
   return null;
 }
 
-function findPosts() {
+// Return EVERY post on the page (no hideProcessed filter).
+// Used for bulk operations like hideSahamPosts().
+function findAllPosts() {
   const posts = [];
   const links = document.querySelectorAll("a.answer_timestamp");
   links.forEach((link) => {
     const post = findPostContainer(link);
-    if (post && !post.dataset.hideProcessed) {
+    if (post && !posts.includes(post)) {
       posts.push(post);
     }
   });
   return posts;
+}
+
+// Return only NEW (unprocessed) posts. Used by processAllPosts().
+function findPosts() {
+  return findAllPosts().filter((post) => !post.dataset.hideProcessed);
 }
 
 function getPostId(post) {
@@ -62,6 +69,12 @@ function getPostId(post) {
   } catch (e) {
     return null;
   }
+}
+
+// Get the question title of a post (Quora's stable test hook).
+function getPostTitle(post) {
+  const titleEl = post.querySelector(".puppeteer_test_question_title");
+  return titleEl ? titleEl.textContent.trim() : "";
 }
 
 // ---------- Hide button ----------
@@ -93,6 +106,50 @@ function hidePost(post) {
   post.style.display = "none";
 }
 
+// ---------- Floating button ----------
+// Loop all posts; if a post's question title contains "tabungan",
+// hide it and persist its id (skip if already in quoraHiddenPosts).
+async function hideSahamPosts() {
+  const hiddenIds = await getHiddenIds();
+  let hiddenCount = 0;
+
+  findAllPosts().forEach((post) => {
+    const id = getPostId(post);
+    if (!id) return;
+
+    // Already hidden -> do nothing
+    if (hiddenIds.includes(id)) return;
+
+    // Visible post -> log it and check for "tabungan"
+    const title = getPostTitle(post);
+    const matches = title.toLowerCase().includes("tabungan");
+    console.log("[quora] visible post:", id, "| contains 'tabungan'?", matches, "| title:", JSON.stringify(title));
+
+    if (matches) {
+      addHiddenId(id);
+      hidePost(post);
+      hiddenCount++;
+    }
+  });
+
+  console.log("[quora] hideSahamPosts done, hidden:", hiddenCount);
+}
+
+function addFloatingButton() {
+  if (document.getElementById("quora-hide-tabungan-fab")) return;
+
+  const fab = document.createElement("button");
+  fab.id = "quora-hide-tabungan-fab";
+  fab.title = "Hide all 'tabungan' posts";
+  fab.textContent = "🗑";
+  fab.style.cssText =
+    "position:fixed;bottom:24px;right:24px;z-index:999999;width:56px;height:56px;" +
+    "border-radius:50%;border:none;background:#e63946;color:#fff;font-size:24px;" +
+    "cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);";
+  fab.addEventListener("click", hideSahamPosts);
+  document.body.appendChild(fab);
+}
+
 // ---------- Main ----------
 async function processAllPosts() {
   const hiddenIds = await getHiddenIds();
@@ -119,3 +176,4 @@ function observePage() {
 
 processAllPosts();
 observePage();
+addFloatingButton();
