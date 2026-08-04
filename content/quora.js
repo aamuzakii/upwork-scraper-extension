@@ -107,11 +107,23 @@ function hidePost(post) {
 }
 
 // ---------- Floating button ----------
-// Loop all posts; if a post's question title contains "tabungan",
-// hide it and persist its id (skip if already in quoraHiddenPosts).
+// Keywords that trigger hiding.
+const HIDE_KEYWORDS = ["tabungan", "saham", "bitcoin", "income", "investor", "trading", "game"];
+// If the title contains any of these, keep the post (do NOT hide).
+const KEEP_KEYWORDS = ["mobil", "otomotif"];
+
+function shouldHideTitle(title) {
+  const lower = title.toLowerCase();
+  // "mobil" wins -> keep it
+  if (KEEP_KEYWORDS.some((k) => lower.includes(k))) return false;
+  return HIDE_KEYWORDS.some((k) => lower.includes(k));
+}
+
+// Loop all posts; hide those whose title matches HIDE_KEYWORDS
+// (unless it also matches KEEP_KEYWORDS). Persist hidden ids.
 async function hideSahamPosts() {
   const hiddenIds = await getHiddenIds();
-  let hiddenCount = 0;
+  const hiddenTitles = [];
 
   findAllPosts().forEach((post) => {
     const id = getPostId(post);
@@ -120,19 +132,20 @@ async function hideSahamPosts() {
     // Already hidden -> do nothing
     if (hiddenIds.includes(id)) return;
 
-    // Visible post -> log it and check for "tabungan"
     const title = getPostTitle(post);
-    const matches = title.toLowerCase().includes("tabungan");
-    console.log("[quora] visible post:", id, "| contains 'tabungan'?", matches, "| title:", JSON.stringify(title));
+    const matches = shouldHideTitle(title);
 
     if (matches) {
       addHiddenId(id);
       hidePost(post);
-      hiddenCount++;
+      hiddenTitles.push(title);
     }
   });
 
-  console.log("[quora] hideSahamPosts done, hidden:", hiddenCount);
+  if (hiddenTitles.length > 0) {
+    alert("Hidden posts:\n\n" + hiddenTitles.join("\n"));
+  }
+  console.log("[quora] hideSahamPosts done, hidden:", hiddenTitles.length);
 }
 
 function addFloatingButton() {
