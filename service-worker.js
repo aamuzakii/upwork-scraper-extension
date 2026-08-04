@@ -292,22 +292,33 @@ function extractFromSearchPage(os) {
 }
 
 chrome.action.onClicked.addListener((tab) => {
-
   chrome.runtime.getPlatformInfo().then((x) => {
-      if (tab.url.includes("find-work")) {
+    let extractor;
+
+    switch (true) {
+      case tab.url.includes('upwork.com') && tab.url.includes('find-work'):
+        extractor = extractFromHomePage;
+        break;
+
+      case tab.url.includes('upwork.com'):
+        extractor = extractFromSearchPage;
+        break;
+
+      case tab.url.includes('olx.co.id'):
+        extractor = extractFromOlx;
+        break;
+
+      default:
+        console.log('Unsupported website');
+        return;
+    }
+
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      function: extractFromHomePage,
+      function: extractor,
       args: [x.os],
     });
-  } else {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      function: extractFromSearchPage,
-      args: [x.os],
-    });
-  }
-  })
+  });
 });
 
 

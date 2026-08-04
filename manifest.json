@@ -11,8 +11,18 @@
   "manifest_version": 3,
   "version": "0.1",
   "description": "Create better Upwork UI",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "background": {
     "service_worker": "service-worker.js"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://id.quora.com/profile/Crithfey-Idemoto*"],
+      "js": ["content/quora.js"]
+    },
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content/twitter.js"]
+    }
+  ]
 }
