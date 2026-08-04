@@ -1,0 +1,38 @@
+content/quora-dom-example.html
+  h_c4173283d1eb1d 1
+manifest.json
+  s_c434164d60a128::t_4d8f4be83727b4 17-19,21-27
+  h_c4173283d1eb1d 14,20
+content/quora.js
+  h_c4173283d1eb1d 1-26,44-45,49-59,63-93,96-100,104-121
+  s_c434164d60a128::t_4ebd717d7e53dc 94-95
+  s_c434164d60a128::t_23dede268ff60a 101-103
+  s_c434164d60a128::t_e11b39f9e75224 27-43,48
+  s_c434164d60a128::t_770eacf09d55b6 46-47
+  s_c434164d60a128::t_d9cc601906e354 60-62
+content/twitter.js
+  h_c4173283d1eb1d 1-2
+service-worker.js
+  h_c4173283d1eb1d 296-315,318,321
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "ce8acae5354d4c5007c4a5b21cbf3be9e4220978",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_c434164d60a128": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "26684284-e049-4416-bfa2-0706861f4b44",
+        "model": "deepseek/deepseek-v4-flash-0731"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
