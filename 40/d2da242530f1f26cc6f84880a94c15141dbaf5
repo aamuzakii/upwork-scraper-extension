@@ -1,0 +1,32 @@
+content/olx-example.html
+  h_c4173283d1eb1d 1-9
+content/rumah123.js
+  h_c4173283d1eb1d 1-132
+content/olx.js
+  h_c4173283d1eb1d 1-83
+manifest.json
+  h_c4173283d1eb1d 20,26-35
+content/quora.js
+  s_c434164d60a128::t_a27a7efd61f347 128,130-131,134,136-140
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "40d2da242530f1f26cc6f84880a94c15141dbaf5",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_c434164d60a128": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "26684284-e049-4416-bfa2-0706861f4b44",
+        "model": "deepseek/deepseek-v4-flash-0731"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
