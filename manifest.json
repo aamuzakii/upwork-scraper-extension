@@ -17,12 +17,21 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://id.quora.com/profile/Crithfey-Idemoto*"],
+      "matches": ["https://id.quora.com/profile*"],
       "js": ["content/quora.js"]
     },
     {
       "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": ["content/twitter.js"]
-    }
+    },{
+
+    "matches": [
+      "https://www.olx.co.id/*",
+      "https://olx.co.id/*"
+    ],
+
+    "js": ["content/olx.js"]
+
+  }
   ]
 }

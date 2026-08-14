@@ -125,22 +125,19 @@ async function hideSahamPosts() {
   const hiddenIds = await getHiddenIds();
   const hiddenTitles = [];
 
-  findAllPosts().forEach((post) => {
+  for (const post of findAllPosts()) {
     const id = getPostId(post);
-    if (!id) return;
-
-    // Already hidden -> do nothing
-    if (hiddenIds.includes(id)) return;
+    if (!id) continue;
+    if (hiddenIds.includes(id)) continue;
 
     const title = getPostTitle(post);
-    const matches = shouldHideTitle(title);
+    if (!shouldHideTitle(title)) continue;
 
-    if (matches) {
-      addHiddenId(id);
-      hidePost(post);
-      hiddenTitles.push(title);
-    }
-  });
+    await addHiddenId(id);
+    hiddenIds.push(id); // keep local cache in sync
+    hidePost(post);
+    hiddenTitles.push(title);
+  }
 
   if (hiddenTitles.length > 0) {
     alert("Hidden posts:\n\n" + hiddenTitles.join("\n"));
