@@ -1,0 +1,18 @@
+content/rumah123.js
+  h_c4173283d1eb1d 7-12
+package.json
+  h_c4173283d1eb1d 12
+yarn.lock
+  h_c4173283d1eb1d 5-57,358-362,738-742
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "1a3a4ba888d8a09a8b845d03bf8eb2609ab0396a",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
