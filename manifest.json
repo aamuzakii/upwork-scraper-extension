@@ -32,6 +32,12 @@
 
     "js": ["content/olx.js"]
 
-  }
+  },{
+  "matches": [
+    "https://www.rumah123.com/*",
+    "https://rumah123.com/*"
+  ],
+  "js": ["content/rumah123.js"]
+}
   ]
 }
