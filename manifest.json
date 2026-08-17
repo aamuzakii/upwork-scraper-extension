@@ -12,6 +12,7 @@
   "version": "0.1",
   "description": "Create better Upwork UI",
   "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://*.supabase.co/*"],
   "background": {
     "service_worker": "service-worker.js"
   },
@@ -37,7 +38,7 @@
     "https://www.rumah123.com/*",
     "https://rumah123.com/*"
   ],
-  "js": ["content/rumah123.js"]
+  "js": ["dist/content/rumah123.js"]
 }
   ]
 }

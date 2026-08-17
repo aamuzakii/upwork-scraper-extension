@@ -4,6 +4,17 @@ console.log("[Rumah123] detected!");
 
 const STORAGE_KEY = "rumah123HiddenIds";
 
+import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "../config/supabase.js";
+
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+);
+
+console.log(supabase);
+
+
 async function getHiddenIds() {
   const data = await chrome.storage.local.get(STORAGE_KEY);
   return data[STORAGE_KEY] || [];
