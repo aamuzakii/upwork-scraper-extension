@@ -1,7 +1,3 @@
-// https://www.rumah123.com/sewa/depok/limo/rumah/?maxPrice=55000000&minPrice=24000000&sort=price-asc
-
-console.log("[Rumah123] detected!");
-
 const STORAGE_KEY = "rumah123HiddenIds";
 // Create this table in Supabase (or change the name here):
 //   create table rumah123_syncs (
@@ -10,6 +6,7 @@ const STORAGE_KEY = "rumah123HiddenIds";
 //     updated_at timestamptz not null default now()
 //   );
 const SUPABASE_SYNC_TABLE = "rumah123_syncs";
+const FORCE_SYNC_BUTTON_ID = "r123-force-sync";
 
 import { createClient } from '@supabase/supabase-js'
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "../config/supabase.js";
@@ -19,7 +16,12 @@ const supabase = createClient(
   SUPABASE_PUBLISHABLE_KEY,
 );
 
-console.log(supabase);
+function hideSidebar() {
+  const sidebars = document.querySelectorAll(".srp-sidebar");
+  sidebars.forEach((sidebar) => {
+    sidebar.style.display = "none";
+  });
+}
 
 
 async function getHiddenIds() {
@@ -36,8 +38,6 @@ async function saveHiddenId(id) {
     await chrome.storage.local.set({
       [STORAGE_KEY]: ids,
     });
-
-    console.log("[Rumah123] Saved:", id);
   }
 }
 
@@ -58,10 +58,10 @@ async function forceSyncHiddenIds() {
 }
 
 function addForceSyncButton() {
-  if (document.getElementById("r123-force-sync")) return;
+  if (document.getElementById(FORCE_SYNC_BUTTON_ID)) return;
 
   const button = document.createElement("button");
-  button.id = "r123-force-sync";
+  button.id = FORCE_SYNC_BUTTON_ID;
   button.type = "button";
   button.textContent = "Sync hidden listings";
   button.title = "Force-push locally hidden listing IDs to Supabase";
@@ -92,7 +92,6 @@ function addForceSyncButton() {
     try {
       const count = await forceSyncHiddenIds();
       button.textContent = `Synced ${count} listing${count === 1 ? "" : "s"}`;
-      console.log(`[Rumah123] Force-synced ${count} hidden IDs to Supabase.`);
     } catch (error) {
       button.textContent = "Sync failed — retry";
       console.error("[Rumah123] Supabase force-sync failed:", error);
@@ -167,10 +166,8 @@ function addHideButton(listing, id) {
 
   if (saveArea) {
     saveArea.appendChild(btn);
-    console.log("[Rumah123] Button injected:", id);
   } else {
     listing.appendChild(btn);
-    console.warn("[Rumah123] Save area not found, appended to card:", id);
   }
 }
 
@@ -178,8 +175,6 @@ async function processListings() {
   const hiddenIds = await getHiddenIds();
 
   const listings = getListings();
-
-  console.log("[Rumah123] Listings:", listings.length);
 
   listings.forEach((listing) => {
     const id = getListingId(listing);
@@ -200,18 +195,29 @@ const observer = new MutationObserver(() => {
   clearTimeout(timer);
 
   timer = setTimeout(() => {
+    hideSidebar();
     processListings();
   }, 200);
 });
 
-observer.observe(document.body, {
-  childList: true,
-  subtree: true,
-});
+function startRumah123() {
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
 
-processListings();
-addForceSyncButton();
+  hideSidebar();
+  processListings();
+  addForceSyncButton();
+}
 
-window.addEventListener("beforeunload", () => {
-  console.log("[Rumah123] unloaded");
-});
+function startAfterPageLoad() {
+  // Give Rumah123 time to finish React hydration before changing its DOM.
+  window.setTimeout(startRumah123, 1000);
+}
+
+if (document.readyState === "complete") {
+  startAfterPageLoad();
+} else {
+  window.addEventListener("load", startAfterPageLoad, { once: true });
+}
