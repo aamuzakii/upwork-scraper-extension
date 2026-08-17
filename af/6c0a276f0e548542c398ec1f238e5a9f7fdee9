@@ -1,0 +1,28 @@
+README.md
+  s_1f2999c6f87f4a::t_6b8778d43a4b5c 1-13
+content/rumah123.js
+  s_1f2999c6f87f4a::t_cca05a953b6ed0 203-207,209-212,214-223
+  h_c4173283d1eb1d 9,19-20,22-24,64,198
+  s_1f2999c6f87f4a::t_6b8778d43a4b5c 21,61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "af6c0a276f0e548542c398ec1f238e5a9f7fdee9",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1f2999c6f87f4a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a00ebc-0028-7af1-8d08-b85c860d560c",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
