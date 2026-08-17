@@ -3,6 +3,13 @@
 console.log("[Rumah123] detected!");
 
 const STORAGE_KEY = "rumah123HiddenIds";
+// Create this table in Supabase (or change the name here):
+//   create table rumah123_syncs (
+//     storage_key text primary key,
+//     hidden_ids text[] not null default '{}',
+//     updated_at timestamptz not null default now()
+//   );
+const SUPABASE_SYNC_TABLE = "rumah123_syncs";
 
 import { createClient } from '@supabase/supabase-js'
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "../config/supabase.js";
@@ -32,6 +39,72 @@ async function saveHiddenId(id) {
 
     console.log("[Rumah123] Saved:", id);
   }
+}
+
+async function forceSyncHiddenIds() {
+  const hiddenIds = await getHiddenIds();
+  const { error } = await supabase.from(SUPABASE_SYNC_TABLE).upsert(
+    {
+      storage_key: STORAGE_KEY,
+      hidden_ids: hiddenIds,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "storage_key" },
+  );
+
+  if (error) throw error;
+
+  return hiddenIds.length;
+}
+
+function addForceSyncButton() {
+  if (document.getElementById("r123-force-sync")) return;
+
+  const button = document.createElement("button");
+  button.id = "r123-force-sync";
+  button.type = "button";
+  button.textContent = "Sync hidden listings";
+  button.title = "Force-push locally hidden listing IDs to Supabase";
+
+  Object.assign(button.style, {
+    position: "fixed",
+    right: "16px",
+    bottom: "16px",
+    zIndex: "2147483647",
+    padding: "10px 14px",
+    border: "none",
+    borderRadius: "8px",
+    background: "#147a43",
+    color: "white",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "600",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+  });
+
+  button.addEventListener("click", async () => {
+    if (button.disabled) return;
+
+    const defaultText = "Sync hidden listings";
+    button.disabled = true;
+    button.textContent = "Syncing…";
+
+    try {
+      const count = await forceSyncHiddenIds();
+      button.textContent = `Synced ${count} listing${count === 1 ? "" : "s"}`;
+      console.log(`[Rumah123] Force-synced ${count} hidden IDs to Supabase.`);
+    } catch (error) {
+      button.textContent = "Sync failed — retry";
+      console.error("[Rumah123] Supabase force-sync failed:", error);
+    } finally {
+      window.setTimeout(() => {
+        button.disabled = false;
+        button.textContent = defaultText;
+      }, 2500);
+    }
+  });
+
+  document.body.appendChild(button);
 }
 
 function getListings() {
@@ -137,6 +210,7 @@ observer.observe(document.body, {
 });
 
 processListings();
+addForceSyncButton();
 
 window.addEventListener("beforeunload", () => {
   console.log("[Rumah123] unloaded");

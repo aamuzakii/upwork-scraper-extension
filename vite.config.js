@@ -40,6 +40,8 @@ export default defineConfig({
   plugins: [copyExtensionFiles()],
   build: {
     emptyOutDir: true,
+    minify: false,
+    sourcemap: true,
     lib: {
       entry: rumah123Script,
       formats: ["iife"],
