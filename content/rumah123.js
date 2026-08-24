@@ -7,6 +7,7 @@ const STORAGE_KEY = "rumah123HiddenIds";
 //   );
 const SUPABASE_SYNC_TABLE = "rumah123_syncs";
 const FORCE_SYNC_BUTTON_ID = "r123-force-sync";
+const PULL_SYNC_BUTTON_ID = "r123-pull-sync";
 
 import { createClient } from '@supabase/supabase-js'
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "../config/supabase.js";
@@ -17,7 +18,9 @@ const supabase = createClient(
 );
 
 function hideSidebar() {
-  const sidebars = document.querySelectorAll(".srp-sidebar");
+  const sidebars = document.querySelectorAll(
+    ".srp-sidebar, [data-test-id='dynamic-srp-card-dfp'], [data-test-id='dynamic-primary-section']"
+  );
   sidebars.forEach((sidebar) => {
     sidebar.style.display = "none";
   });
@@ -55,6 +58,26 @@ async function forceSyncHiddenIds() {
   if (error) throw error;
 
   return hiddenIds.length;
+}
+
+async function pullHiddenIdsFromSupabase() {
+  const { data, error } = await supabase
+    .from(SUPABASE_SYNC_TABLE)
+    .select("hidden_ids")
+    .eq("storage_key", STORAGE_KEY)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) throw new Error("No synced hidden listings were found in Supabase.");
+  if (!Array.isArray(data.hidden_ids)) {
+    throw new Error("Supabase returned an invalid hidden_ids value.");
+  }
+
+  await chrome.storage.local.set({
+    [STORAGE_KEY]: data.hidden_ids,
+  });
+
+  return data.hidden_ids.length;
 }
 
 function addForceSyncButton() {
@@ -95,6 +118,62 @@ function addForceSyncButton() {
     } catch (error) {
       button.textContent = "Sync failed — retry";
       console.error("[Rumah123] Supabase force-sync failed:", error);
+    } finally {
+      window.setTimeout(() => {
+        button.disabled = false;
+        button.textContent = defaultText;
+      }, 2500);
+    }
+  });
+
+  document.body.appendChild(button);
+}
+
+function addPullSyncButton() {
+  if (document.getElementById(PULL_SYNC_BUTTON_ID)) return;
+
+  const button = document.createElement("button");
+  button.id = PULL_SYNC_BUTTON_ID;
+  button.type = "button";
+  button.textContent = "Pull hidden listings";
+  button.title = "Replace local hidden listing IDs with the Supabase copy";
+
+  Object.assign(button.style, {
+    position: "fixed",
+    right: "16px",
+    bottom: "64px",
+    zIndex: "2147483647",
+    padding: "10px 14px",
+    border: "none",
+    borderRadius: "8px",
+    background: "#175cd3",
+    color: "white",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "600",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)",
+  });
+
+  button.addEventListener("click", async () => {
+    if (button.disabled) return;
+
+    const localCount = (await getHiddenIds()).length;
+    const shouldPull = window.confirm(
+      `Replace your ${localCount} local hidden listing${localCount === 1 ? "" : "s"} with the copy saved in Supabase?`,
+    );
+    if (!shouldPull) return;
+
+    const defaultText = "Pull hidden listings";
+    button.disabled = true;
+    button.textContent = "Pulling…";
+
+    try {
+      const count = await pullHiddenIdsFromSupabase();
+      processListings();
+      button.textContent = `Pulled ${count} listing${count === 1 ? "" : "s"}`;
+    } catch (error) {
+      button.textContent = "Pull failed — retry";
+      console.error("[Rumah123] Supabase pull failed:", error);
     } finally {
       window.setTimeout(() => {
         button.disabled = false;
@@ -209,6 +288,7 @@ function startRumah123() {
   hideSidebar();
   processListings();
   addForceSyncButton();
+  addPullSyncButton();
 }
 
 function startAfterPageLoad() {

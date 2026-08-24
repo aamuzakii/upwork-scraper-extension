@@ -24,6 +24,11 @@
     {
       "matches": ["https://x.com/*", "https://twitter.com/*"],
       "js": ["content/twitter.js"]
+    },
+    {
+      "matches": ["https://www.threads.com/*", "https://threads.com/*"],
+      "js": ["content/threads.js"],
+      "run_at": "document_start"
     },{
 
     "matches": [
