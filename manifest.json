@@ -40,6 +40,12 @@
 
   },{
   "matches": [
+    "https://www.olx.co.id/*",
+    "https://olx.co.id/*"
+  ],
+  "js": ["content/olx-car.js"]
+},{
+  "matches": [
     "https://www.rumah123.com/*",
     "https://rumah123.com/*"
   ],

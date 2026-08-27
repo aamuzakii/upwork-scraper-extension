@@ -1,3 +1,11 @@
+function isHousePage() {
+  return location.pathname.includes("rumah");
+}
+
+if (!isHousePage()) {
+  throw new Error("Not a house page");
+}
+
 const STORAGE_KEY = "olxHiddenIds";
 
 async function getHiddenIds() {
