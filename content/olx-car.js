@@ -1,5 +1,5 @@
 (() => {
-  const BLOCKED_TITLES = ["ayla", "agya", "sigra", "mobilio"];
+  const BLOCKED_TITLES = ["ayla", "agya", "sigra", "mobilio", "calya", "freed", "brio"];
   const BLOCKED_IDS = new Set();
 
   function isCarPage() {
@@ -34,7 +34,15 @@
     const id = getListingId(listing);
     if (id) BLOCKED_IDS.add(id);
     listing.style.filter = "blur(4px)";
-    listing.style.opacity = "0.4";
+    listing.style.display = "none";
+  }
+
+  function hideAds() {
+    document
+      .querySelectorAll('[data-test-id="native-ad-results-middle"]')
+      .forEach((ad) => {
+        ad.style.display = "none";
+      });
   }
 
   function processListings() {
@@ -45,6 +53,7 @@
         hideListing(listing);
       }
     });
+    hideAds();
   }
 
   let scheduled = false;

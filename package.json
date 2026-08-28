@@ -6,7 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:chrome": "google-chrome --pack-extension=\"$PWD\" --pack-extension-key=\"$HOME/muzaki/upwork-scraper-extension.pem\"",
+    "upload": "rclone copy web-ext-artifacts/upwork_spider_-_alpha_version-0.1.xpi aamzk:/alami/"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +19,8 @@
     "g": "^2.0.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.36.0"
+    "sequelize": "^6.36.0",
+    "web-ext": "^10.6.0"
   },
   "devDependencies": {
     "vite": "^7.0.0"
