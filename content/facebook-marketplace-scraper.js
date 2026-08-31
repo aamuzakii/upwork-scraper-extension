@@ -7,6 +7,7 @@
 
   const CARS_TABLE = "cars";
   const SOURCE = "facebook";
+  const MIN_YEAR = 2013;
 
   // Facebook Marketplace cards carry everything in the link's aria-label, e.g.
   //   "2015 Honda CR-V, IDR165,000,000, Jakarta, Indonesia, listing 2356805815136933"
@@ -216,6 +217,12 @@
       if (lockedIds.has(data.listing_id)) {
         console.log(
           `[facebook-scraper] skipping locked listing ${data.listing_id}`,
+        );
+        continue;
+      }
+      if (data.year != null && data.year < MIN_YEAR) {
+        console.log(
+          `[facebook-scraper] skipping old listing ${data.listing_id} (year ${data.year})`,
         );
         continue;
       }

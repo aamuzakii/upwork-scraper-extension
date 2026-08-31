@@ -7,6 +7,7 @@
 
   const CARS_TABLE = "cars";
   const SOURCE = "olx";
+  const MIN_YEAR = 2013;
 
   const INDONESIAN_MONTHS = {
     jan: 0, feb: 1, mar: 2, apr: 3, mei: 4, jun: 5,
@@ -250,6 +251,12 @@
       if (lockedIds.has(data.listing_id)) {
         console.log(
           `[olx-car-scraper] skipping locked listing ${data.listing_id}`,
+        );
+        continue;
+      }
+      if (data.year != null && data.year < MIN_YEAR) {
+        console.log(
+          `[olx-car-scraper] skipping old listing ${data.listing_id} (year ${data.year})`,
         );
         continue;
       }
