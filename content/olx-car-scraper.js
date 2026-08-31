@@ -16,6 +16,42 @@
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
 
+  // Cached set of listing_ids the user has locked (manually edited) in Supabase.
+  let lockedIds = new Set();
+  let lockedIdsFetchedAt = 0;
+
+  async function refreshLockedIds() {
+    const url = new URL(`/rest/v1/${CARS_TABLE}`, SUPABASE_URL);
+    url.searchParams.set("select", "listing_id");
+    url.searchParams.set("source", `eq.${SOURCE}`);
+    url.searchParams.set("locked", "eq.true");
+
+    const response = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`locked ids fetch failed: ${response.status}`);
+    }
+
+    const rows = await response.json();
+    lockedIds = new Set(rows.map((row) => row.listing_id));
+    lockedIdsFetchedAt = Date.now();
+  }
+
+  async function ensureLockedIds() {
+    if (Date.now() - lockedIdsFetchedAt < 60000) return;
+    try {
+      await refreshLockedIds();
+      console.log(`[olx-car-scraper] loaded ${lockedIds.size} locked listing(s)`);
+    } catch (error) {
+      console.error("[olx-car-scraper] failed to refresh locked ids:", error);
+    }
+  }
+
   function isCarPage() {
     return location.pathname.includes("mobil");
   }
@@ -203,12 +239,20 @@
   async function flush(listings) {
     if (listings.length === 0) return;
 
+    await ensureLockedIds();
+
     const carRows = [];
     for (const listing of listings) {
       const data = extractListing(listing);
       if (!data || seenIds.has(data.listing_id)) continue;
 
       seenIds.add(data.listing_id);
+      if (lockedIds.has(data.listing_id)) {
+        console.log(
+          `[olx-car-scraper] skipping locked listing ${data.listing_id}`,
+        );
+        continue;
+      }
       carRows.push(data);
     }
 
