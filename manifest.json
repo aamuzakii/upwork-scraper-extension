@@ -59,6 +59,13 @@
   "js": ["content/facebook-marketplace-scraper.js"]
 },{
   "matches": [
+    "https://www.facebook.com/marketplace/item/*",
+    "https://facebook.com/marketplace/item/*",
+    "https://web.facebook.com/marketplace/item/*"
+  ],
+  "js": ["content/facebook-marketplace-detail-scraper.js"]
+},{
+  "matches": [
     "https://www.rumah123.com/*",
     "https://rumah123.com/*"
   ],

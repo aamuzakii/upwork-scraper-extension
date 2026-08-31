@@ -23,6 +23,7 @@ create table if not exists public.cars (
   currency       text   not null default 'IDR',
   location       text,                            -- e.g. "Pamulang"
   posted_date    date,                            -- best-effort parse of "12 Agu"
+  description    text,                            -- seller description (detail pages)
   locked         boolean not null default false,   -- set true to stop the scraper from overwriting
   unique (source, listing_id)
 );
