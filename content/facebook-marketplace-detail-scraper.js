@@ -40,16 +40,29 @@
   // Mileage, e.g. "Driven 190,000 km" -> 190000
   function getMileageKm() {
     const spans = document.querySelectorAll('span[dir="auto"]');
+
+    // Collect every span that mentions km, so we can see what the page offers.
+    const candidates = [];
     for (const span of spans) {
       const text = (span.textContent || "").trim();
       if (text.includes("\n")) continue;
       const match = text.match(/([\d.,]+)\s*km/i);
       if (match) {
         const digits = match[1].replace(/[.,]/g, "");
-        return digits ? Number(digits) : null;
+        candidates.push({
+          text,
+          parsed: digits ? Number(digits) : null,
+        });
       }
     }
-    return null;
+
+    console.log("[fb-detail] mileage candidates:", candidates);
+
+    // Prefer the "Driven ... km" vehicle detail, not a map distance badge.
+    const driven = candidates.find((c) => /driven/i.test(c.text));
+    const chosen = driven || candidates[0] || null;
+    console.log("[fb-detail] mileage chosen:", chosen);
+    return chosen ? chosen.parsed : null;
   }
 
   // Location, e.g. "Jakarta Selatan, DKI Jakarta · Location is approximate"
@@ -96,6 +109,11 @@
   }
 
   async function apiFetch(url, options = {}) {
+    console.log(
+      `[fb-detail] ${options.method || "GET"} ${url.pathname}${url.search}`,
+      options.body ? JSON.parse(options.body) : "",
+    );
+
     const response = await fetch(url, {
       ...options,
       headers: {
@@ -109,6 +127,7 @@
     if (!response.ok) {
       throw new Error(`Supabase returned ${response.status}: ${body.slice(0, 500)}`);
     }
+    console.log(`[fb-detail] response ${response.status}:`, body.slice(0, 300));
     return body ? JSON.parse(body) : null;
   }
 
@@ -160,6 +179,7 @@
     }
 
     const mileage = getMileageKm();
+    console.log("[fb-detail] extracted mileage:", mileage);
 
     const existing = await getExisting(listingId);
     if (existing && existing.description) {
