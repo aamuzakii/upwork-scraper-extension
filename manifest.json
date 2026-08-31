@@ -46,6 +46,19 @@
   "js": ["content/olx-car.js"]
 },{
   "matches": [
+    "https://www.olx.co.id/*",
+    "https://olx.co.id/*"
+  ],
+  "js": ["content/olx-car-scraper.js"]
+},{
+  "matches": [
+    "https://www.facebook.com/marketplace/*",
+    "https://facebook.com/marketplace/*",
+    "https://web.facebook.com/marketplace/*"
+  ],
+  "js": ["content/facebook-marketplace-scraper.js"]
+},{
+  "matches": [
     "https://www.rumah123.com/*",
     "https://rumah123.com/*"
   ],
