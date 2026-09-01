@@ -1,0 +1,39 @@
+service-worker.js
+  s_728083b87870a8::t_1fcf30f0d914c7 17-26,86-87,92,97-98
+  s_728083b87870a8::t_e782a06f19a544 5-8,15-16,34,45,48,59,61-62,64,66-69,80-83,85,96,99-102,104-127,456
+  s_728083b87870a8::t_b1eb8e2f16d3e2 9-14,84
+  s_728083b87870a8::t_f5258ff98da0bc 63,65,70-79,88-91,103
+  s_728083b87870a8::t_d7ce673bbccb11 27-29,31-33
+  s_728083b87870a8::t_e3ba55659199d3 35-37,42-44
+  s_728083b87870a8::t_d6116d6c28d995 46-47
+  s_728083b87870a8::t_c2cd45349605af 49-51,56-58
+  s_728083b87870a8::t_c783f117bd4968 60
+  s_728083b87870a8::t_60cee29b42d68e 93-95
+  s_2326c67e541e3f::t_956f0aad2c3808 30,38-41,52-55
+manifest.json
+  s_728083b87870a8::t_e782a06f19a544 14-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "5fc5a92c8e3ce38c5a7524a6abe7b8f788b47688",
+  "prompts": {},
+  "sessions": {
+    "s_2326c67e541e3f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05bf8-3b5d-7062-afe7-49b0897487f4",
+        "model": "unknown"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    },
+    "s_728083b87870a8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05be7-74bc-7b90-97a5-8305b31bf450",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
