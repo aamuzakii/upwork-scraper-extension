@@ -22,32 +22,35 @@ function drawRemainingTimeIcon(remainingMinutes, weeklyMinutes) {
   const size = 38;
   const canvas = new OffscreenCanvas(size, size);
   const context = canvas.getContext('2d');
-  const cardHeight = 16;
-  const borderPadding = 1.8;
-  const trackWidth = size - borderPadding * 2;
-  const trackHeight = cardHeight - borderPadding * 2;
-  const usableWidth = trackWidth - borderPadding * 2;
-  const remaining = Math.max(0, remainingMinutes);
-  const total = Math.max(0, weeklyMinutes);
-  const progress = total === 0 ? 0 : Math.min(1, remaining / total);
-  const barColor = remainingMinutes <= 0 ? '#f20031' : remaining <= 60 ? '#f59e0b' : '#16a34a';
-  const barWidth = Math.max(4, usableWidth * progress);
+  const label = 'UPW';
+  const pixelSize = 4;
+  const glyphs = {
+    U: ['101', '101', '101', '101', '111'],
+    P: ['110', '101', '110', '100', '100'],
+    W: ['101', '101', '101', '111', '101'],
+  };
+  const glyphWidth = 3 * pixelSize;
+  const glyphGap = 1;
+  const labelWidth = label.length * glyphWidth + (label.length - 1) * glyphGap;
+  const startX = (size - labelWidth) / 2;
+  const startY = (size - 5 * pixelSize) / 2 - 6;
 
-  // This compact card mirrors the reference extension's toolbar treatment.
-  context.fillStyle = 'whitesmoke';
-  context.fillRect(0, 0, size, cardHeight);
-
-  context.fillStyle = '#2e3338';
-  context.fillRect(borderPadding, borderPadding, trackWidth, trackHeight);
-
-  context.fillStyle = barColor;
-  context.fillRect(borderPadding * 2, borderPadding * 2, barWidth, trackHeight - borderPadding * 2);
-
-  context.fillStyle = 'whitesmoke';
-  context.font = 'bold 12px Arial';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  // context.fillText(formatRemainingTime(remainingMinutes), size / 2, cardHeight / 2 + 0.5);
+  context.fillStyle = '#14a800';
+  for (let characterIndex = 0; characterIndex < label.length; characterIndex += 1) {
+    const glyph = glyphs[label[characterIndex]];
+    for (let row = 0; row < glyph.length; row += 1) {
+      for (let column = 0; column < glyph[row].length; column += 1) {
+        if (glyph[row][column] === '1') {
+          context.fillRect(
+            startX + characterIndex * (glyphWidth + glyphGap) + column * pixelSize,
+            startY + row * pixelSize,
+            pixelSize,
+            pixelSize,
+          );
+        }
+      }
+    }
+  }
 
   return context.getImageData(0, 0, size, size);
 }
