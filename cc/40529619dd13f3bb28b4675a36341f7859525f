@@ -1,0 +1,14 @@
+service-worker.js
+  h_c4173283d1eb1d 98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "cc40529619dd13f3bb28b4675a36341f7859525f",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
