@@ -11,17 +11,11 @@ function formatRemainingTime(minutes) {
   const absoluteMinutes = Math.abs(wholeMinutes);
   const hours = Math.floor(absoluteMinutes / 60);
   const mins = absoluteMinutes % 60;
-  return `${sign}${hours}:${String(mins).padStart(2, '0')}`;
+  return `${hours}:${String(mins).padStart(2, '0')}`;
 }
 
 function formatRemainingTimeBadge(minutes) {
-  const roundedMinutes = Math.round(minutes);
-  const sign = roundedMinutes < 0 ? '-' : '';
-  const absoluteMinutes = Math.abs(roundedMinutes);
-  const hours = Math.floor(absoluteMinutes / 60);
-  const mins = absoluteMinutes % 60;
-
-  return hours > 0 ? `${sign}${hours}h` : `${sign}${mins}m`;
+  return formatRemainingTime(minutes)
 }
 
 function drawRemainingTimeIcon(remainingMinutes, weeklyMinutes) {
@@ -53,7 +47,7 @@ function drawRemainingTimeIcon(remainingMinutes, weeklyMinutes) {
   context.font = 'bold 12px Arial';
   context.textAlign = 'center';
   context.textBaseline = 'middle';
-  context.fillText(formatRemainingTime(remainingMinutes), size / 2, cardHeight / 2 + 0.5);
+  // context.fillText(formatRemainingTime(remainingMinutes), size / 2, cardHeight / 2 + 0.5);
 
   return context.getImageData(0, 0, size, size);
 }
