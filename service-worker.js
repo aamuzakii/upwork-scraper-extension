@@ -95,7 +95,7 @@ async function updateObligationTimeIcon() {
     });
   } catch (error) {
     console.error('[Obligation timer] Unable to update remaining obligation time:', error);
-    await chrome.action.setBadgeText({ text: '!' });
+    await chrome.action.setBadgeText({ text: 'error' });
     await chrome.action.setBadgeBackgroundColor({ color: '#dc2626' });
     await chrome.action.setTitle({ title: 'Unable to load remaining work time' });
   }
