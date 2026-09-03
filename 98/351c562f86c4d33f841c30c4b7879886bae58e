@@ -1,0 +1,19 @@
+service-worker.js
+  s_a67d1e52b6ac68::t_fbafb0ca400987 28-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "98351c562f86c4d33f841c30c4b7879886bae58e",
+  "prompts": {},
+  "sessions": {
+    "s_a67d1e52b6ac68": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a067ac-90ce-7590-9c1e-7e4b612ebf88",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
