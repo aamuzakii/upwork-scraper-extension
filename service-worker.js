@@ -23,34 +23,12 @@ function drawRemainingTimeIcon(remainingMinutes, weeklyMinutes) {
   const canvas = new OffscreenCanvas(size, size);
   const context = canvas.getContext('2d');
   const label = 'UPW';
-  const pixelSize = 4;
-  const glyphs = {
-    U: ['101', '101', '101', '101', '111'],
-    P: ['110', '101', '110', '100', '100'],
-    W: ['101', '101', '101', '111', '101'],
-  };
-  const glyphWidth = 3 * pixelSize;
-  const glyphGap = 1;
-  const labelWidth = label.length * glyphWidth + (label.length - 1) * glyphGap;
-  const startX = (size - labelWidth) / 2;
-  const startY = (size - 5 * pixelSize) / 2 - 6;
 
   context.fillStyle = '#14a800';
-  for (let characterIndex = 0; characterIndex < label.length; characterIndex += 1) {
-    const glyph = glyphs[label[characterIndex]];
-    for (let row = 0; row < glyph.length; row += 1) {
-      for (let column = 0; column < glyph[row].length; column += 1) {
-        if (glyph[row][column] === '1') {
-          context.fillRect(
-            startX + characterIndex * (glyphWidth + glyphGap) + column * pixelSize,
-            startY + row * pixelSize,
-            pixelSize,
-            pixelSize,
-          );
-        }
-      }
-    }
-  }
+  context.font = 'bold 15px Arial';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(label, size / 2, size / 2 - 6);
 
   return context.getImageData(0, 0, size, size);
 }
