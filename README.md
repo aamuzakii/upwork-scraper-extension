@@ -30,6 +30,14 @@ on conflict (key) do nothing;
 Toggle `enabled` to `true` to permit Threads. If the flag is missing or the
 Supabase request fails, the site remains hidden.
 
+## Threads session limit
+
+This personal extension uses one shared server-side Threads session: 15 minutes
+of access followed by a 30-minute cooldown. Run
+[`sql/threads-session-policy.sql`](sql/threads-session-policy.sql) once in the
+Supabase SQL editor. Because there is a single database row, all of your
+devices share the same session and cooldown automatically.
+
 ## Rumah123 hydration timing
 
 Rumah123 uses React hydration. Do not change the page DOM as soon as the content script loads: React can replace that early DOM, which makes injected controls disappear and may trigger React hydration error #418.

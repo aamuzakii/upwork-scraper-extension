@@ -40,13 +40,73 @@ async function isThreadsAllowed() {
   return flags[0]?.enabled === true;
 }
 
-// Keep Threads hidden until the remote productivity policy explicitly permits it.
+async function claimThreadsSession() {
+  const response = await fetch(
+    new URL("/rest/v1/rpc/claim_threads_session", SUPABASE_URL),
+    {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: "{}",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Supabase returned ${response.status}`);
+  }
+
+  const state = await response.json();
+  return state[0];
+}
+
+async function enforceThreadsPolicy() {
+  if (!(await isThreadsAllowed())) {
+    blockThreads();
+    return null;
+  }
+
+  const session = await claimThreadsSession();
+  if (session?.allowed !== true) {
+    blockThreads();
+    return null;
+  }
+
+  allowThreads();
+  return session;
+}
+
+function scheduleSessionExpiryCheck(session) {
+  const sessionEndsAt = Date.parse(session.session_ends_at);
+  if (!Number.isFinite(sessionEndsAt)) {
+    throw new Error("Threads session response has no valid expiry time");
+  }
+
+  window.setTimeout(() => {
+    enforceThreadsPolicy()
+      .then((nextSession) => {
+        if (nextSession) scheduleSessionExpiryCheck(nextSession);
+      })
+      .catch((error) => {
+        console.error("[Threads] Session check failed; keeping Threads blocked.", error);
+        blockThreads();
+      });
+  }, Math.max(0, sessionEndsAt - Date.now()) + 50);
+}
+
+// Keep Threads hidden until both the remote access flag and shared session
+// policy permit it. The RPC owns all timing so every device sees one session.
 blockThreads();
 
-isThreadsAllowed()
-  .then((allowed) => {
-    if (allowed) allowThreads();
+enforceThreadsPolicy()
+  .then((session) => {
+    if (session) {
+      scheduleSessionExpiryCheck(session);
+    }
   })
   .catch((error) => {
     console.error("[Threads] Access check failed; keeping Threads blocked.", error);
+    blockThreads();
   });
