@@ -4,6 +4,15 @@
 
 Run `yarn build`, then load or reload the `dist/` directory as the unpacked Chrome extension.
 
+## Firefox XPI
+
+Run `yarn xpi`. It rebuilds `dist/`, creates
+`web-ext-artifacts/upwork-spider-0.1.xpi`, verifies that `manifest.json` is at
+the archive root, and runs a ZIP integrity test. The generated file is an
+unsigned XPI: install it temporarily through `about:debugging` in Firefox
+Developer Edition/Nightly, or submit it to AMO for signing before installing it
+in standard Firefox.
+
 ## Threads productivity flag
 
 Threads is hidden by default. It is shown only when Supabase has an enabled

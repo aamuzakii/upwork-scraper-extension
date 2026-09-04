@@ -6,6 +6,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
+    "xpi": "sh scripts/build-xpi.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "chrome": "google-chrome --pack-extension=\"$PWD\" --pack-extension-key=\"$HOME/muzaki/upwork-scraper-extension.pem\" && rclone copy ../upwork-scraper-extension.crx aamzk:/alami/",
     "upload": "rclone copy web-ext-artifacts/upwork_spider_-_alpha_version-0.1.xpi aamzk:/alami/"
