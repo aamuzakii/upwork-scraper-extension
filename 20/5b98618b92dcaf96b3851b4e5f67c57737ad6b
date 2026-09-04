@@ -1,0 +1,23 @@
+package.json
+  s_39dbdeee142ff7::t_49c1a5996984c3 9
+scripts/build-xpi.sh
+  s_39dbdeee142ff7::t_49c1a5996984c3 1-35
+README.md
+  s_39dbdeee142ff7::t_49c1a5996984c3 7-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "205b98618b92dcaf96b3851b4e5f67c57737ad6b",
+  "prompts": {},
+  "sessions": {
+    "s_39dbdeee142ff7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06a96-5470-77a1-b8f9-92d838956e36",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
