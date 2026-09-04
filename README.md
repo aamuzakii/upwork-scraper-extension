@@ -6,12 +6,21 @@ Run `yarn build`, then load or reload the `dist/` directory as the unpacked Chro
 
 ## Firefox XPI
 
-Run `yarn xpi`. It rebuilds `dist/`, creates
-`web-ext-artifacts/upwork-spider-0.1.xpi`, verifies that `manifest.json` is at
-the archive root, and runs a ZIP integrity test. The generated file is an
-unsigned XPI: install it temporarily through `about:debugging` in Firefox
-Developer Edition/Nightly, or submit it to AMO for signing before installing it
-in standard Firefox.
+Run `yarn xpi`. It rebuilds `dist/`, validates it using Mozilla's `web-ext`,
+and creates `web-ext-artifacts/upwork-spider-0.1.xpi`. It also verifies that
+`manifest.json` is at the archive root and runs a ZIP integrity test.
+
+This file is structurally valid but unsigned. Release and Beta Firefox reject
+all unsigned add-ons (often with a misleading “appears to be corrupt” message).
+For a permanently installable XPI, obtain AMO API credentials and run:
+
+```sh
+yarn web-ext sign --source-dir dist --channel=unlisted \
+  --api-key="$AMO_JWT_ISSUER" --api-secret="$AMO_JWT_SECRET"
+```
+
+Mozilla returns the signed XPI in `web-ext-artifacts/`. The add-on ID in
+`manifest.json` must remain unchanged for all future signed updates.
 
 ## Threads productivity flag
 

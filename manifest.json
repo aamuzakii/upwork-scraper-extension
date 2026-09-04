@@ -11,13 +11,22 @@
   "manifest_version": 3,
   "version": "0.1",
   "description": "Create better Upwork UI",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "upwork-spider@aamuzakii.local",
+      "data_collection_permissions": {
+        "required": ["browsingActivity", "websiteContent"]
+      }
+    }
+  },
   "permissions": ["activeTab", "alarms", "scripting", "storage"],
   "host_permissions": [
     "https://*.supabase.co/*",
     "https://home-dashboard-lac.vercel.app/*"
   ],
   "background": {
-    "service_worker": "service-worker.js"
+    "service_worker": "service-worker.js",
+    "scripts": ["service-worker.js"]
   },
   "content_scripts": [
     {
