@@ -1,0 +1,33 @@
+README.md
+  s_7dd76e18847b9f::t_4b07a810d0cc49 33-40
+sql/threads-session-policy.sql
+  s_7dd76e18847b9f::t_4b07a810d0cc49 1-64
+content/threads.js
+  s_1b63560bd95973::t_322dbe9c57dd4f 56,60,76
+  s_7dd76e18847b9f::t_f6507746221e96 68,74,78,81-98,104-107
+  s_7dd76e18847b9f::t_4b07a810d0cc49 43-55,57-59,61-67,69-73,75,77,79-80,99-100,103,111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "59bb05cca8b9d228b843c24b09cb5b0b556c0dfc",
+  "prompts": {},
+  "sessions": {
+    "s_1b63560bd95973": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a05a4f-3e77-75f2-9a54-64c65019d58d",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    },
+    "s_7dd76e18847b9f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a069b3-e6f2-7573-b854-c6b2684f8a52",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
