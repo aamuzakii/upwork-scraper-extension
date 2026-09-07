@@ -46,7 +46,8 @@
       "matches": [
         "https://www.facebook.com/*",
         "https://facebook.com/*",
-        "https://web.facebook.com/*"
+        "https://web.facebook.com/*",
+        "https://m.facebook.com/*"
       ],
       "js": ["content/facebook-blocker.js"],
       "run_at": "document_start"
@@ -58,6 +59,14 @@
         "https://m.youtube.com/*"
       ],
       "js": ["content/youtube-blocker.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "js": ["content/instagram-blocker.js"],
       "run_at": "document_start"
     },{
 
