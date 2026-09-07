@@ -1,0 +1,30 @@
+manifest.json
+  s_78bfc0a5a85633::t_fc4894fdb57bb0 63-70
+  s_0ffa267d8da015::t_b1ad6e9ca5154b 49-50
+content/instagram-blocker.js
+  s_78bfc0a5a85633::t_d8521c149fbec4 1-66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "72e1b4198d2f40b3e806a091ec86066eeb6640fd",
+  "prompts": {},
+  "sessions": {
+    "s_0ffa267d8da015": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ecd221-dd32-4531-ab61-51d289f8766e",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    },
+    "s_78bfc0a5a85633": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "27d2fe3e-2336-4076-9094-00aaecb259ea",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
