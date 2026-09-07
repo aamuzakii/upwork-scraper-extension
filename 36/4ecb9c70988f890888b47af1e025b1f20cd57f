@@ -1,0 +1,19 @@
+manifest.json
+  s_9bd4043cbe5a18::t_40b9a9656516c8 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "364ecb9c70988f890888b47af1e025b1f20cd57f",
+  "prompts": {},
+  "sessions": {
+    "s_9bd4043cbe5a18": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a1adf963-994a-4877-992d-fc6651082561",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
