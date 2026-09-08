@@ -1,0 +1,20 @@
+content/facebook-blocker.js
+  s_0ffa267d8da015::t_23bc9b2f94b321 4-6
+  s_0ffa267d8da015::t_2608a4cbca48e5 41,43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "3fe65ecfbbc74fcfef87d07e4a05513916624fb3",
+  "prompts": {},
+  "sessions": {
+    "s_0ffa267d8da015": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "e2ecd221-dd32-4531-ab61-51d289f8766e",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
