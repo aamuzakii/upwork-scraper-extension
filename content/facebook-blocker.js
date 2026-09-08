@@ -27,12 +27,15 @@
     "This page is blocked to keep you focused.\n\n" +
     "You can still use Marketplace and Groups.";
 
+  const REDIRECT_URL =
+    "https://ilmiyyah.com/halaqah-silsilah-ilmiyah/belajar-tauhid";
+
   function isBlocked(path) {
     return BLOCKED.some((fn) => fn(path));
   }
 
   function redirectToMarketplace() {
-    location.replace("https://www.facebook.com/marketplace/");
+    location.replace(REDIRECT_URL);
   }
 
   function handleNavigation() {
@@ -53,7 +56,7 @@
       '<p style="font-size:15px;line-height:1.5;color:#b0b3b8;white-space:pre-line">' +
       BLOCKED_MESSAGE +
       "</p>" +
-      '<button id="fb-blocker-go" style="margin-top:20px;padding:10px 20px;background:#0866ff;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer">Go to Marketplace</button>' +
+      '<button id="fb-blocker-go" style="margin-top:20px;padding:10px 20px;background:#0866ff;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer">Belajar Tauhid</button>' +
       "</div></body>";
 
     const btn = document.getElementById("fb-blocker-go");
