@@ -1,16 +1,9 @@
 (() => {
   "use strict";
 
-  // Only allow Facebook Marketplace and Groups (car groups for learning car
-  // symptoms / common problems). Block everything else to prevent doom
-  // scrolling on the feed, reels, and video pages.
-
-  const ALLOWED = [
-    (p) => p.startsWith("/marketplace"),
-    (p) => p.startsWith("/groups"),
-    (p) => p.startsWith("/login"),
-    (p) => p.startsWith("/sharer"),
-  ];
+  // Block ONLY the doom-scroll surfaces (feed, reels, watch, videos, stories,
+  // games). Everything else — marketplace, groups, report dialogs, settings,
+  // notifications — is left alone.
 
   const BLOCKED = [
     (p) => p.startsWith("/reel"),
@@ -34,12 +27,7 @@
     "This page is blocked to keep you focused.\n\n" +
     "You can still use Marketplace and Groups.";
 
-  function isAllowed(path) {
-    return ALLOWED.some((fn) => fn(path));
-  }
-
   function isBlocked(path) {
-    // Explicit blocked patterns win over the generic homepage.
     return BLOCKED.some((fn) => fn(path));
   }
 
@@ -50,17 +38,9 @@
   function handleNavigation() {
     const path = location.pathname;
 
-    // Ignore if we're already on an allowed page.
-    if (isAllowed(path)) return;
+    if (!isBlocked(path)) return; // allow everything else
 
-    if (isBlocked(path)) {
-      // Block the doom-scroll pages: replace content and stop interaction.
-      blockPage();
-      return;
-    }
-
-    // Any other Facebook page (profile, feed, stories, etc.) -> redirect.
-    redirectToMarketplace();
+    blockPage();
   }
 
   function blockPage() {
@@ -78,13 +58,6 @@
 
     const btn = document.getElementById("fb-blocker-go");
     if (btn) btn.addEventListener("click", redirectToMarketplace);
-
-    // Keep redirecting if Facebook pushes a new URL (SPA navigation).
-    history.pushState = new Proxy(history.pushState, {
-      apply(target, thisArg, args) {
-        return target.apply(thisArg, args);
-      },
-    });
   }
 
   // Run immediately and re-check on SPA navigation.
