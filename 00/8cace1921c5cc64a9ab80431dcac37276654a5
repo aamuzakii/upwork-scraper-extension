@@ -1,0 +1,25 @@
+content/olx.js
+  s_7a029a2841a3fe::t_c1d11d97174428 84-93,97
+  s_7a029a2841a3fe::t_c8255ade9ee244 98
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "008cace1921c5cc64a9ab80431dcac37276654a5",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_7a029a2841a3fe": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "00f2b617-d8ad-4412-b420-8901caf5438a",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
