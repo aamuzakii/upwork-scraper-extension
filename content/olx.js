@@ -81,8 +81,20 @@ function addHideButton(listing, id) {
   favButton.parentElement.appendChild(btn);
 }
 
+function hideNonListItemBoxes() {
+  document
+    .querySelectorAll('[data-aut-id="itemBox"]')
+    .forEach((el) => {
+      if (el.tagName.toLowerCase() !== "li") {
+        hideListing(el);
+      }
+    });
+}
+
 async function processListings() {
   const hiddenIds = await getHiddenIds();
+
+  hideNonListItemBoxes();
 
   getListings().forEach((listing) => {
     const id = getListingId(listing);
