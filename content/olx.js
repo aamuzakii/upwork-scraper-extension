@@ -36,6 +36,22 @@ function hideListing(listing) {
   listing.style.display = "none";
 }
 
+const BLOCKED_LOCATIONS = ["pamulang", "beji", "pancoran", "sawangan"];
+
+function getLocationText(listing) {
+  return (
+    listing
+      .querySelector('span[data-aut-id="item-location"]')
+      ?.textContent?.trim()
+      .toLowerCase() || ""
+  );
+}
+
+function isBlockedLocation(listing) {
+  const location = getLocationText(listing);
+  return BLOCKED_LOCATIONS.some((word) => location.includes(word));
+}
+
 function addHideButton(listing, id) {
   if (listing.dataset.olxProcessed) return;
 
@@ -71,7 +87,7 @@ async function processListings() {
   getListings().forEach((listing) => {
     const id = getListingId(listing);
 
-    if (hiddenIds.includes(id)) {
+    if (hiddenIds.includes(id) || isBlockedLocation(listing)) {
       hideListing(listing);
     } else {
       addHideButton(listing, id);
