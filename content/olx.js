@@ -36,7 +36,7 @@ function hideListing(listing) {
   listing.style.display = "none";
 }
 
-const BLOCKED_LOCATIONS = ["pamulang", "beji", "pancoran", "sawangan"];
+const BLOCKED_LOCATIONS = ["pamulang", "beji", "pancoran", "sawangan", "bojongsari"];
 
 function getLocationText(listing) {
   return (
@@ -81,12 +81,18 @@ function addHideButton(listing, id) {
   favButton.parentElement.appendChild(btn);
 }
 
-function hideNonListItemBoxes() {
+function blurListing(listing) {
+  listing.style.filter = "blur(8px)";
+  listing.style.pointerEvents = "none";
+  listing.style.userSelect = "none";
+}
+
+function blurNonListItemBoxes() {
   document
     .querySelectorAll('[data-aut-id="itemBox"]')
     .forEach((el) => {
       if (el.tagName.toLowerCase() !== "li") {
-        hideListing(el);
+        blurListing(el);
       }
     });
 }
@@ -94,7 +100,7 @@ function hideNonListItemBoxes() {
 async function processListings() {
   const hiddenIds = await getHiddenIds();
 
-  hideNonListItemBoxes();
+  blurNonListItemBoxes();
 
   getListings().forEach((listing) => {
     const id = getListingId(listing);

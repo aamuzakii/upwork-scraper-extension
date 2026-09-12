@@ -1,35 +1,15 @@
 (() => {
   "use strict";
 
-  // Only allow a profile page (URL contains a username). Block everything
-  // else (home feed, explore, reels, direct, stories) to prevent doom
-  // scrolling.
-
-  const RESERVED = new Set([
-    "explore",
-    "reels",
-    "reel",
-    "direct",
-    "p",
-    "tv",
-    "stories",
-    "story",
-    "accounts",
-    "about",
-    "legal",
-    "press",
-    "api",
-    "privacy",
-    "developer",
-  ]);
+  // Only block the home feed (root path "/"). Everything else (profiles,
+  // explore, reels, direct, stories) stays available.
 
   const BLOCKED_MESSAGE =
-    "This page is blocked to keep you focused.\n\n" +
-    "You can still view profiles and their posts / reels.";
+    "The feed is blocked to keep you focused.\n\n" +
+    "You can still view profiles, explore, reels, and everything else.";
 
-  function isProfile(path) {
-    const seg = path.split("/").filter(Boolean)[0] || "";
-    return seg.length > 0 && !RESERVED.has(seg.toLowerCase());
+  function isFeed(path) {
+    return path === "/" || path === "";
   }
 
   function blockPage() {
@@ -47,8 +27,8 @@
   function handleNavigation() {
     const path = location.pathname;
 
-    if (isProfile(path)) {
-      // Allowed: a profile page (username in URL). Leave it alone.
+    if (!isFeed(path)) {
+      // Allowed: anything that isn't the home feed.
       return;
     }
 
