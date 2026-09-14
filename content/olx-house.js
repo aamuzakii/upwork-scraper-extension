@@ -8,6 +8,14 @@
   const HOUSES_TABLE = "houses";
   const SOURCE = "olx";
 
+  const BLOCKED_LOCATIONS = [
+    "pamulang",
+    "beji",
+    "pancoran",
+    "sawangan",
+    "bojongsari",
+  ];
+
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
 
@@ -58,6 +66,24 @@
     if (!text) return null;
     const digits = text.replace(/\D/g, "");
     return digits ? Number(digits) : null;
+  }
+
+  function getLocationText(listing) {
+    return (
+      listing
+        .querySelector('span[data-aut-id="item-location"]')
+        ?.textContent?.trim()
+        .toLowerCase() || ""
+    );
+  }
+
+  function isBlockedLocation(listing) {
+    const location = getLocationText(listing);
+    return BLOCKED_LOCATIONS.some((word) => location.includes(word));
+  }
+
+  function hideListing(listing) {
+    listing.style.display = "none";
   }
 
   function extractListing(listing) {
@@ -140,9 +166,18 @@
   }
 
   function processListings() {
-    const fresh = Array.from(getListings()).filter((listing) => {
+    const fresh = [];
+
+    getListings().forEach((listing) => {
+      if (isBlockedLocation(listing)) {
+        hideListing(listing);
+        return;
+      }
+
       const id = getListingId(listing);
-      return id && !seenIds.has(id);
+      if (!id || seenIds.has(id)) return;
+
+      fresh.push(listing);
     });
 
     if (fresh.length === 0) return;
