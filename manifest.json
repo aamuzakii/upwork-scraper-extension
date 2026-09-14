@@ -75,7 +75,7 @@
       "https://olx.co.id/*"
     ],
 
-    "js": ["content/olx.js"]
+    "js": ["content/olx-house.js"]
 
   },{
   "matches": [
