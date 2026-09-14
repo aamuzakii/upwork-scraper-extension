@@ -8,14 +8,8 @@
   const HOUSES_TABLE = "houses";
   const SOURCE = "olx";
 
-  const BLOCKED_LOCATIONS = [
-    "pamulang", // terdekat cuma south city
-    "beji", // Le Mirage Compound masuk beji => masih mungkin
-    "pancoran",
-    "sawangan",
-    "bojongsari",
-    "jagakarsa" // mungkin aja sih, batasnya tol, bisa aja ngaku jagakarsa padahal dibawah tol
-  ];
+  // Only keep listings in these locations; everything else is ignored entirely.
+  const ALLOWED_LOCATIONS = ["cinere", "limo", "jagakarsa", "beji"];
 
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
@@ -26,7 +20,7 @@
 
   function isHousePage() {
     return location.pathname.includes("rumah");
-  }
+  } 
 
   function getListings() {
     return document.querySelectorAll("li[data-aut-id='itemBox']");
@@ -82,9 +76,9 @@
     );
   }
 
-  function isBlockedLocation(listing) {
+  function isAllowedLocation(listing) {
     const location = getLocationText(listing);
-    return BLOCKED_LOCATIONS.some((word) => location.includes(word));
+    return ALLOWED_LOCATIONS.some((word) => location.includes(word));
   }
 
   function hideListing(listing) {
@@ -195,7 +189,7 @@
     const fresh = [];
 
     getListings().forEach((listing) => {
-      if (isBlockedLocation(listing)) {
+      if (!isAllowedLocation(listing)) {
         hideListing(listing);
         return;
       }
