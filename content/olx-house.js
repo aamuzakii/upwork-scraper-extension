@@ -9,7 +9,12 @@
   const SOURCE = "olx";
 
   // Only keep listings in these locations; everything else is ignored entirely.
-  const ALLOWED_LOCATIONS = ["cinere", "limo", "jagakarsa", "beji"];
+  const ALLOWED_LOCATIONS = [
+    "cinere", // ngaku
+    "limo", // utama
+    // "jagakarsa", // ngadi-ngadi
+    // "beji" // green river view
+  ];
 
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
@@ -237,3 +242,4 @@
     }
   }
 })();
+// https://www.olx.co.id/disewakan-rumah-apartemen_c5160?sorting=desc-creation&filter=price_between_24000000_to_55000000%2Ctype_eq_rumah
