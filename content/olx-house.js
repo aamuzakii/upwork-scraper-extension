@@ -76,7 +76,6 @@
       url,
       images: getImages(listing),
       price: parsePrice(priceText),
-      currency: "IDR",
     };
   }
 

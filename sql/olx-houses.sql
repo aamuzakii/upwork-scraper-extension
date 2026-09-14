@@ -12,7 +12,6 @@ create table if not exists public.houses (
   url        text   not null,                 -- full listing url
   images     jsonb  not null default '[]',    -- array of image url strings
   price      bigint,                          -- normalized IDR number, e.g. 33000000
-  currency   text   not null default 'IDR',
   unique (source, listing_id)
 );
 
