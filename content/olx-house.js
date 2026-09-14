@@ -9,15 +9,20 @@
   const SOURCE = "olx";
 
   const BLOCKED_LOCATIONS = [
-    "pamulang",
-    "beji",
+    "pamulang", // terdekat cuma south city
+    "beji", // Le Mirage Compound masuk beji => masih mungkin
     "pancoran",
     "sawangan",
     "bojongsari",
+    "jagakarsa" // mungkin aja sih, batasnya tol, bisa aja ngaku jagakarsa padahal dibawah tol
   ];
 
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
+
+  // Ids already present in the DB (loaded once on page load). Any listing whose
+  // id is in here gets hidden from the UI and skipped on subsequent scrapes.
+  let knownIds = new Set();
 
   function isHousePage() {
     return location.pathname.includes("rumah");
@@ -105,6 +110,27 @@
     };
   }
 
+  async function loadKnownIds() {
+    const url = new URL(`/rest/v1/${HOUSES_TABLE}`, SUPABASE_URL);
+    url.searchParams.set("select", "listing_id");
+    url.searchParams.set("source", `eq.${SOURCE}`);
+
+    const response = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`known ids fetch failed: ${response.status}`);
+    }
+
+    const rows = await response.json();
+    knownIds = new Set(rows.map((row) => row.listing_id));
+    console.log(`[olx-house] loaded ${knownIds.size} known listing(s)`);
+  }
+
   async function postToSupabase(rows) {
     const url = new URL(`/rest/v1/${HOUSES_TABLE}`, SUPABASE_URL);
 
@@ -177,6 +203,12 @@
       const id = getListingId(listing);
       if (!id || seenIds.has(id)) return;
 
+      if (knownIds.has(id)) {
+        hideListing(listing);
+        seenIds.add(id);
+        return;
+      }
+
       fresh.push(listing);
     });
 
@@ -187,7 +219,13 @@
 
   const observer = new MutationObserver(processListings);
 
-  function start() {
+  async function start() {
+    try {
+      await loadKnownIds();
+    } catch (error) {
+      console.error("[olx-house] failed to load known ids:", error);
+    }
+
     observer.observe(document.body, { childList: true, subtree: true });
     window.addEventListener("scroll", processListings, { passive: true });
     processListings();
