@@ -133,6 +133,82 @@
     console.log(`[olx-house] loaded ${knownDisplay.size} known listing(s)`);
   }
 
+  // PATCH a single row's `display` to false. Uses the listing_id + source key.
+  async function markDisplayFalse(listingId) {
+    const url = new URL(`/rest/v1/${HOUSES_TABLE}`, SUPABASE_URL);
+    url.searchParams.set("listing_id", `eq.${listingId}`);
+    url.searchParams.set("source", `eq.${SOURCE}`);
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({ display: false }),
+    });
+
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(
+        `markDisplayFalse returned ${response.status}: ${body.slice(0, 300)}`,
+      );
+    }
+  }
+
+  // Inject a small "Hide" button into a listing card. Clicking it marks
+  // `display=false` in the DB and hides the card locally.
+  function addHideButton(listing) {
+    if (listing.dataset.hideButtonAdded) return;
+    listing.dataset.hideButtonAdded = "1";
+
+    const listingId = getListingId(listing);
+    if (!listingId) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Hide";
+    Object.assign(button.style, {
+      position: "absolute",
+      top: "8px",
+      right: "8px",
+      zIndex: "10",
+      padding: "4px 10px",
+      cursor: "pointer",
+      background: "#d32f2f",
+      color: "#fff",
+      border: "none",
+      borderRadius: "4px",
+      fontSize: "12px",
+    });
+    button.title = "Mark display=false";
+
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      button.disabled = true;
+      button.textContent = "…";
+
+      try {
+        await markDisplayFalse(listingId);
+        knownDisplay.set(listingId, false);
+        seenIds.add(listingId);
+        hideListing(listing);
+        console.log(`[olx-house] marked ${listingId} display=false`);
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = "Hide";
+        console.error("[olx-house] failed to mark display=false:", error);
+      }
+    });
+
+    listing.style.position = "relative";
+    listing.appendChild(button);
+  }
+
   async function postToSupabase(rows) {
     const url = new URL(`/rest/v1/${HOUSES_TABLE}`, SUPABASE_URL);
 
@@ -211,12 +287,15 @@
         // stays visible. Either way it is already persisted, so never re-post.
         if (knownDisplay.get(id) === false) {
           hideListing(listing);
+        } else {
+          addHideButton(listing);
         }
         seenIds.add(id);
         return;
       }
 
       // Not in DB yet: keep visible and queue it for saving.
+      addHideButton(listing);
       fresh.push(listing);
     });
 
