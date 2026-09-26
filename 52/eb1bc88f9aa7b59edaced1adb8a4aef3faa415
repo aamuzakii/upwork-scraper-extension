@@ -1,0 +1,20 @@
+content/olx-house.js
+  s_c9932dad35eada::t_f514b607d44b19 136-211
+  s_c9932dad35eada::t_4613349e86e303 290-291,298
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "52eb1bc88f9aa7b59edaced1adb8a4aef3faa415",
+  "prompts": {},
+  "sessions": {
+    "s_c9932dad35eada": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "6442acbb-87f5-470a-a969-112c56e6b060",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
