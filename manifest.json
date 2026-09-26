@@ -109,6 +109,12 @@
     "https://rumah123.com/*"
   ],
   "js": ["dist/content/rumah123.js"]
+},{
+  "matches": [
+    "https://www.pinhome.id/*",
+    "https://pinhome.id/*"
+  ],
+  "js": ["content/pinhome-house.js"]
 }
   ]
 }
