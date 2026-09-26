@@ -8,15 +8,42 @@
   const HOUSES_TABLE = "houses";
   const SOURCE = "olx";
 
-  // Only keep listings in these locations; everything else is ignored entirely.
-  const ALLOWED_LOCATIONS = [
-    "cinere", // ngaku
-    "limo", // utama
-    // "jagakarsa", // ngadi-ngadi
-    // "beji" // green river view
-    "cimanggis",
-    "cibubur"
+  // Every location the user can toggle from the in-page panel.
+  const LOCATION_OPTIONS = [
+    { value: "cinere", label: "Cinere" },
+    { value: "limo", label: "Limo" },
+    { value: "jagakarsa", label: "Jagakarsa" },
+    { value: "beji", label: "Beji" },
+    { value: "cimanggis", label: "Cimanggis" },
+    { value: "cibubur", label: "Cibubur" },
   ];
+
+  const DEFAULT_LOCATIONS = ["cinere", "limo", "cimanggis", "cibubur"];
+  const STORAGE_KEY = "olxHouseAllowedLocations";
+
+  // Locations the user has selected. Loaded from storage on start, falling back
+  // to DEFAULT_LOCATIONS when nothing is saved yet. Only listings in these
+  // locations are kept; everything else is ignored entirely.
+  let allowedLocations = [...DEFAULT_LOCATIONS];
+
+  async function loadAllowedLocations() {
+    try {
+      const data = await chrome.storage.local.get(STORAGE_KEY);
+      if (Array.isArray(data[STORAGE_KEY])) {
+        allowedLocations = data[STORAGE_KEY];
+      }
+    } catch (error) {
+      console.error("[olx-house] failed to load locations:", error);
+    }
+  }
+
+  async function saveAllowedLocations() {
+    try {
+      await chrome.storage.local.set({ [STORAGE_KEY]: allowedLocations });
+    } catch (error) {
+      console.error("[olx-house] failed to save locations:", error);
+    }
+  }
 
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
@@ -86,7 +113,7 @@
 
   function isAllowedLocation(listing) {
     const location = getLocationText(listing);
-    return ALLOWED_LOCATIONS.some((word) => location.includes(word));
+    return allowedLocations.some((word) => location.includes(word));
   }
 
   function hideListing(listing) {
@@ -306,13 +333,107 @@
 
   const observer = new MutationObserver(processListings);
 
+  // Floating panel with a toggle button + checkbox list for ALLOWED_LOCATIONS.
+  function buildLocationPanel() {
+    if (document.getElementById("olx-house-panel")) return;
+
+    const panel = document.createElement("div");
+    panel.id = "olx-house-panel";
+    Object.assign(panel.style, {
+      position: "fixed",
+      top: "16px",
+      right: "16px",
+      zIndex: "2147483647",
+      background: "#fff",
+      color: "#222",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+      padding: "12px",
+      fontFamily: "Arial, sans-serif",
+      fontSize: "13px",
+      width: "180px",
+    });
+
+    const header = document.createElement("div");
+    Object.assign(header.style, {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "8px",
+    });
+
+    const title = document.createElement("span");
+    title.textContent = "Lokasi";
+
+    const toggle = document.createElement("span");
+    toggle.textContent = "—";
+    toggle.style.cursor = "pointer";
+    toggle.style.fontSize = "14px";
+    toggle.style.userSelect = "none";
+
+    header.appendChild(title);
+    header.appendChild(toggle);
+    panel.appendChild(header);
+
+    const list = document.createElement("div");
+    list.style.display = "none";
+
+    LOCATION_OPTIONS.forEach(({ value, label }) => {
+      const row = document.createElement("label");
+      Object.assign(row.style, {
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "3px 0",
+        cursor: "pointer",
+      });
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = value;
+      checkbox.checked = allowedLocations.includes(value);
+
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          if (!allowedLocations.includes(value)) {
+            allowedLocations.push(value);
+          }
+        } else {
+          allowedLocations = allowedLocations.filter((w) => w !== value);
+        }
+        saveAllowedLocations();
+        processListings();
+      });
+
+      const text = document.createElement("span");
+      text.textContent = label;
+
+      row.appendChild(checkbox);
+      row.appendChild(text);
+      list.appendChild(row);
+    });
+
+    toggle.addEventListener("click", () => {
+      const hidden = list.style.display === "none";
+      list.style.display = hidden ? "block" : "none";
+      toggle.textContent = hidden ? "×" : "—";
+    });
+
+    panel.appendChild(list);
+    document.body.appendChild(panel);
+  }
+
   async function start() {
+    await loadAllowedLocations();
+
     try {
       await loadKnownIds();
     } catch (error) {
       console.error("[olx-house] failed to load known ids:", error);
     }
 
+    buildLocationPanel();
     observer.observe(document.body, { childList: true, subtree: true });
     window.addEventListener("scroll", processListings, { passive: true });
     processListings();
