@@ -187,15 +187,20 @@
 
   // Inject a small "Hide" button into a listing card. Clicking it marks
   // `display=false` in the DB and hides the card locally.
+  // Idempotent per element: returns early only if THIS element already has a
+  // button. OLX re-renders cards on "load more"/scroll, which replaces the node,
+  // so we must not cache state on the listing element (its href/id may also
+  // appear after a skeleton render) — instead we check for the button's own
+  // marker each pass, which tolerates duplicated injections.
   function addHideButton(listing) {
-    if (listing.dataset.hideButtonAdded) return;
-    listing.dataset.hideButtonAdded = "1";
+    if (listing.querySelector("button[data-olx-hide-btn]")) return;
 
     const listingId = getListingId(listing);
     if (!listingId) return;
 
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.olxHideBtn = "1";
     button.textContent = "Hide";
     Object.assign(button.style, {
       position: "absolute",
@@ -307,7 +312,7 @@
       }
 
       const id = getListingId(listing);
-      if (!id || seenIds.has(id)) return;
+      if (!id) return;
 
       if (knownDisplay.has(id)) {
         // Already in DB: hide only when display is exactly false; otherwise it
@@ -321,8 +326,11 @@
         return;
       }
 
-      // Not in DB yet: keep visible and queue it for saving.
+      // Not in DB yet. Always (re)attach the button — idempotent per element —
+      // so re-rendered cards still get one. Only queue for saving the first
+      // time we see this id.
       addHideButton(listing);
+      if (seenIds.has(id)) return;
       fresh.push(listing);
     });
 
@@ -437,6 +445,11 @@
     observer.observe(document.body, { childList: true, subtree: true });
     window.addEventListener("scroll", processListings, { passive: true });
     processListings();
+
+    // Aggressive safety net: periodically re-scan so that cards OLX re-renders
+    // (e.g. "load more") get their Hide button back even when no mutation
+    // captured the change. Idempotent, so duplicates are harmless.
+    window.setInterval(processListings, 2000);
   }
 
   function startAfterPageLoad() {
