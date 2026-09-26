@@ -14,14 +14,17 @@
     "limo", // utama
     // "jagakarsa", // ngadi-ngadi
     // "beji" // green river view
+    "cimanggis",
+    "cibubur"
   ];
 
   // Session-level dedupe so scrolling the same page doesn't spam the API.
   const seenIds = new Set();
 
-  // Ids already present in the DB (loaded once on page load). Any listing whose
-  // id is in here gets hidden from the UI and skipped on subsequent scrapes.
-  let knownIds = new Set();
+  // listing_id -> display value (true/false/null) for rows already in the DB,
+  // loaded once on page load. A listing is only hidden when it is present here
+  // AND its display value is exactly false.
+  let knownDisplay = new Map();
 
   function isHousePage() {
     return location.pathname.includes("rumah");
@@ -111,7 +114,7 @@
 
   async function loadKnownIds() {
     const url = new URL(`/rest/v1/${HOUSES_TABLE}`, SUPABASE_URL);
-    url.searchParams.set("select", "listing_id");
+    url.searchParams.set("select", "listing_id,display");
     url.searchParams.set("source", `eq.${SOURCE}`);
 
     const response = await fetch(url, {
@@ -126,8 +129,8 @@
     }
 
     const rows = await response.json();
-    knownIds = new Set(rows.map((row) => row.listing_id));
-    console.log(`[olx-house] loaded ${knownIds.size} known listing(s)`);
+    knownDisplay = new Map(rows.map((row) => [row.listing_id, row.display]));
+    console.log(`[olx-house] loaded ${knownDisplay.size} known listing(s)`);
   }
 
   async function postToSupabase(rows) {
@@ -194,6 +197,7 @@
     const fresh = [];
 
     getListings().forEach((listing) => {
+      // Rule 1: hide anything outside ALLOWED_LOCATIONS.
       if (!isAllowedLocation(listing)) {
         hideListing(listing);
         return;
@@ -202,12 +206,17 @@
       const id = getListingId(listing);
       if (!id || seenIds.has(id)) return;
 
-      if (knownIds.has(id)) {
-        hideListing(listing);
+      if (knownDisplay.has(id)) {
+        // Already in DB: hide only when display is exactly false; otherwise it
+        // stays visible. Either way it is already persisted, so never re-post.
+        if (knownDisplay.get(id) === false) {
+          hideListing(listing);
+        }
         seenIds.add(id);
         return;
       }
 
+      // Not in DB yet: keep visible and queue it for saving.
       fresh.push(listing);
     });
 
@@ -243,3 +252,9 @@
   }
 })();
 // https://www.olx.co.id/disewakan-rumah-apartemen_c5160?sorting=desc-creation&filter=price_between_24000000_to_55000000%2Ctype_eq_rumah
+// https://www.olx.co.id/cimanggis_g5001324/disewakan-rumah-apartemen_c5160?sorting=desc-creation&filter=price_between_24000000_to_55000000%2Ctype_eq_rumah
+// https://www.olx.co.id/cibubur_g5007152/disewakan-rumah-apartemen_c5160?sorting=desc-creation&filter=price_between_24000000_to_55000000%2Ctype_eq_rumah
+
+
+// cibubur_g5007152
+// limo_g5001327
