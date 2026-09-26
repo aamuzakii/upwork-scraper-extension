@@ -1,0 +1,32 @@
+content/pinhome-example-dom.html
+  h_c4173283d1eb1d 1
+manifest.json
+  s_eb8fc421354799::t_c2f3dba1494579 112-117
+content/pinhome-house.js
+  s_eb8fc421354799::t_f0c508666017ae 1-24,29,31-34,36-43,45-52,54-85,87-107,109-252
+  s_eb8fc421354799::t_12f10a8c22607f 27-28,30
+  s_eb8fc421354799::t_158acd6d4286f1 108
+  s_eb8fc421354799::t_02941632f33e23 25-26,35,44,53
+  s_eb8fc421354799::t_2bc00e079fd3fd 86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c203e30692d6d8812f1e288b08562827a3ef7705",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_eb8fc421354799": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "a954db57-5e1b-4183-a61b-f060339a546f",
+        "model": "openrouter/SENDIRI/deepseek/deepseek-v4-pro-0813"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
