@@ -9,7 +9,8 @@
     "xpi": "sh scripts/build-xpi.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "chrome": "google-chrome --pack-extension=\"$PWD\" --pack-extension-key=\"$HOME/muzaki/upwork-scraper-extension.pem\" && rclone copy ../upwork-scraper-extension.crx aamzk:/alami/",
-    "upload": "rclone copy web-ext-artifacts/upwork_spider_-_alpha_version-0.1.xpi aamzk:/alami/"
+    "upload": "rclone copy web-ext-artifacts/upwork_spider_-_alpha_version-0.1.xpi aamzk:/alami/",
+    "release": "node -e \"const fs=require('fs');const m=JSON.parse(fs.readFileSync('manifest.json','utf8'));m.version=String(Number(m.version)+1);fs.writeFileSync('manifest.json',JSON.stringify(m,null,2)+'\\n');console.log('Version:',m.version);\" && yarn build && yarn xpi"
   },
   "author": "",
   "license": "ISC",

@@ -9,7 +9,7 @@
     }
   },
   "manifest_version": 3,
-  "version": "0.3",
+  "version": "0.4",
   "description": "Create better Upwork UI",
   "browser_specific_settings": {
     "gecko": {
