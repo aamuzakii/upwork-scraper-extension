@@ -1,0 +1,18 @@
+package.json
+  h_c4173283d1eb1d 12-13
+manifest.json
+  h_c4173283d1eb1d 12
+scripts/release.js
+  h_c4173283d1eb1d 1-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "7c36485d404c50ef6fcdc3e8fb90812df10bf251",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
