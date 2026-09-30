@@ -120,6 +120,23 @@
     listing.style.display = "none";
   }
 
+  // Remove OLX's page chrome and sponsored result blocks. OLX inserts some of
+  // these after the initial render, so this runs on each listing scan too.
+  const AD_COMPONENT_SELECTORS = [
+    'header[data-aut-id="defaultHeader"]',
+    "p#adsResultsNear",
+    '[data-test-id="native-ad-results-middle"]',
+    '[data-test-id="ad-results-banner"]',
+    '[data-aut-id="staticBannerSrpList"]',
+    '[data-aut-id="baxter-ads-results-middle2"]',
+  ];
+
+  function hideAdComponents() {
+    document.querySelectorAll(AD_COMPONENT_SELECTORS.join(",")).forEach((element) => {
+      element.style.setProperty("display", "none", "important");
+    });
+  }
+
   function extractListing(listing) {
     const listingId = getListingId(listing);
     const url = getUrl(listing);
@@ -302,6 +319,7 @@
   }
 
   function processListings() {
+    hideAdComponents();
     const fresh = [];
 
     getListings().forEach((listing) => {
