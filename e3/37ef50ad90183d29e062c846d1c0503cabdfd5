@@ -1,0 +1,23 @@
+README.md
+  s_aa84d6be806993::t_771ee17d82e44e 25-28
+package.json
+  s_aa84d6be806993::t_771ee17d82e44e 12
+scripts/upload.js
+  s_aa84d6be806993::t_771ee17d82e44e 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e337ef50ad90183d29e062c846d1c0503cabdfd5",
+  "prompts": {},
+  "sessions": {
+    "s_aa84d6be806993": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f186-d13c-70c3-820f-5c33867bee25",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
