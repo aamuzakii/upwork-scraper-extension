@@ -22,6 +22,10 @@ yarn web-ext sign --source-dir dist --channel=unlisted \
 Mozilla returns the signed XPI in `web-ext-artifacts/`. The add-on ID in
 `manifest.json` must remain unchanged for all future signed updates.
 
+Run `yarn upload` to copy the most recently created `.xpi` in
+`web-ext-artifacts/` to the `Extension` folder at the root of the configured
+`aamzk` Google Drive remote.
+
 ## Threads productivity flag
 
 Threads is hidden by default. It is shown only when Supabase has an enabled
