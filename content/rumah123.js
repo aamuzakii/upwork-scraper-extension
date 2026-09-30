@@ -199,6 +199,19 @@ function hideListing(listing) {
   listing.style.display = "none";
 }
 
+function hideOldUpdateLabels(listing) {
+  const updateLabels = listing.querySelectorAll(
+    '[data-test-id="srp-card-last-update"]'
+  );
+
+  updateLabels.forEach((label) => {
+    if (label.textContent.toLocaleLowerCase().includes("bulan")) {
+      const card = label.closest('[data-test-id^="property-card-"]');
+      if (card) card.style.display = "none";
+    }
+  });
+}
+
 function createButton(id, listing) {
   const btn = document.createElement("button");
 
@@ -256,6 +269,8 @@ async function processListings() {
   const listings = getListings();
 
   listings.forEach((listing) => {
+    hideOldUpdateLabels(listing);
+
     const id = getListingId(listing);
 
     if (!id) return;
