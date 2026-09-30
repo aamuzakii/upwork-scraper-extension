@@ -1,0 +1,20 @@
+content/rumah123.js
+  s_8ba8f502034ccc::t_5758a73639ceae 209-210
+  s_8ba8f502034ccc::t_22c745e7fa6807 202-208,211-214,272-273
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "fbb805f135e67b626f9aa95b1e59b037304371d7",
+  "prompts": {},
+  "sessions": {
+    "s_8ba8f502034ccc": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f195-a243-7f73-97b5-de03c3c5293b",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
