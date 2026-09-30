@@ -135,14 +135,29 @@
     '[data-aut-id="breadcrumb"]',
     '[data-aut-id="baxter-ads-results-bottom"]',
     '[data-aut-id="baxter-ads-results-right"]',
+    '[data-aut-id="baxter-ads-results-top"]',
     '[title="lamudi-branding"]',
     ".Rn9ll",
     "._3zMOW",
+    "._3a9ut",
+    "#popular-searches-mobile",
+    ".V7Cnl.OqKql",
   ];
 
   function hideAdComponents() {
     document.querySelectorAll(AD_COMPONENT_SELECTORS.join(",")).forEach((element) => {
       element.style.setProperty("display", "none", "important");
+    });
+  }
+
+  function enlargeLoadMoreButton() {
+    document.querySelectorAll('[data-aut-id="btnLoadMore"]').forEach((button) => {
+      button.style.setProperty("min-height", "72px", "important");
+      button.style.setProperty("min-width", "min(100%, 360px)", "important");
+      button.style.setProperty("padding", "20px 32px", "important");
+      button.style.setProperty("font-size", "20px", "important");
+      button.style.setProperty("box-sizing", "border-box", "important");
+      button.style.setProperty("cursor", "pointer", "important");
     });
   }
 
@@ -329,6 +344,7 @@
 
   function processListings() {
     hideAdComponents();
+    enlargeLoadMoreButton();
     const fresh = [];
 
     getListings().forEach((listing) => {
@@ -402,7 +418,7 @@
     title.textContent = "Lokasi";
 
     const toggle = document.createElement("span");
-    toggle.textContent = "— qna";
+    toggle.textContent = "-";
     toggle.style.cursor = "pointer";
     toggle.style.fontSize = "14px";
     toggle.style.userSelect = "none";
