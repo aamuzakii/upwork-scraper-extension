@@ -129,6 +129,7 @@
     '[data-test-id="ad-results-banner"]',
     '[data-aut-id="staticBannerSrpList"]',
     '[data-aut-id="baxter-ads-results-middle2"]',
+    '[data-aut-id="seo-footer-qna"]',
   ];
 
   function hideAdComponents() {
@@ -393,7 +394,7 @@
     title.textContent = "Lokasi";
 
     const toggle = document.createElement("span");
-    toggle.textContent = "— 0.1";
+    toggle.textContent = "— qna";
     toggle.style.cursor = "pointer";
     toggle.style.fontSize = "14px";
     toggle.style.userSelect = "none";
