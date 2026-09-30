@@ -1,0 +1,16 @@
+content/olx-house.js
+  h_c4173283d1eb1d 133-134
+manifest.json
+  h_c4173283d1eb1d 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "48a5fbd0bddefe49dfda5ef22bf85b312fe0be7e",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
