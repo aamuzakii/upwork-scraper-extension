@@ -1,0 +1,23 @@
+package.json
+  s_d093eabc36e239::t_01b6e9f6d00f2c 13
+scripts/release.js
+  s_d093eabc36e239::t_01b6e9f6d00f2c 6-20,24,26-29,48
+.gitignore
+  s_d093eabc36e239::t_01b6e9f6d00f2c 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b6c309dd9e4cac24163f966f89f2b181d122840c",
+  "prompts": {},
+  "sessions": {
+    "s_d093eabc36e239": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f13c-9459-7c81-ab14-0d35f8008a3b",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
