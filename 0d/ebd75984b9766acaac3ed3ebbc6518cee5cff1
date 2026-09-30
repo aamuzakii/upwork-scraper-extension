@@ -1,0 +1,24 @@
+content/olx-house.js
+  s_d093eabc36e239::t_8ac981013e2a31 123-139,322,491
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0debd75984b9766acaac3ed3ebbc6518cee5cff1",
+  "prompts": {},
+  "humans": {
+    "h_c4173283d1eb1d": {
+      "author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_d093eabc36e239": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f13c-9459-7c81-ab14-0d35f8008a3b",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Abdullah Al Muzaki <aamuzakii@gmail.com>"
+    }
+  }
+}
