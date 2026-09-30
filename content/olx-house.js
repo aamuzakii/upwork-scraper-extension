@@ -130,6 +130,8 @@
     '[data-aut-id="staticBannerSrpList"]',
     '[data-aut-id="baxter-ads-results-middle2"]',
     '[data-aut-id="seo-footer-qna"]',
+    '[data-aut-id="seo-footer-widget"]',
+    '[data-aut-id="footer"]',
   ];
 
   function hideAdComponents() {
