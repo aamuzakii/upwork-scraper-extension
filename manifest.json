@@ -9,37 +9,61 @@
     }
   },
   "manifest_version": 3,
-  "version": "0.4",
+  "version": "2.4",
   "description": "Create better Upwork UI",
   "browser_specific_settings": {
     "gecko": {
       "id": "upwork-spider@aamuzakii.local",
       "data_collection_permissions": {
-        "required": ["browsingActivity", "websiteContent"]
+        "required": [
+          "browsingActivity",
+          "websiteContent"
+        ]
       }
     }
   },
-  "permissions": ["activeTab", "alarms", "scripting", "storage"],
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "scripting",
+    "storage"
+  ],
   "host_permissions": [
     "https://*.supabase.co/*",
     "https://home-dashboard-lac.vercel.app/*"
   ],
   "background": {
     "service_worker": "service-worker.js",
-    "scripts": ["service-worker.js"]
+    "scripts": [
+      "service-worker.js"
+    ]
   },
   "content_scripts": [
     {
-      "matches": ["https://id.quora.com/profile*"],
-      "js": ["content/quora.js"]
+      "matches": [
+        "https://id.quora.com/profile*"
+      ],
+      "js": [
+        "content/quora.js"
+      ]
     },
     {
-      "matches": ["https://x.com/*", "https://twitter.com/*"],
-      "js": ["content/twitter.js"]
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "content/twitter.js"
+      ]
     },
     {
-      "matches": ["https://www.threads.com/*", "https://threads.com/*"],
-      "js": ["content/threads.js"],
+      "matches": [
+        "https://www.threads.com/*",
+        "https://threads.com/*"
+      ],
+      "js": [
+        "content/threads.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -49,7 +73,9 @@
         "https://web.facebook.com/*",
         "https://m.facebook.com/*"
       ],
-      "js": ["content/facebook-blocker.js"],
+      "js": [
+        "content/facebook-blocker.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -58,7 +84,9 @@
         "https://youtube.com/*",
         "https://m.youtube.com/*"
       ],
-      "js": ["content/youtube-blocker.js"],
+      "js": [
+        "content/youtube-blocker.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -66,55 +94,75 @@
         "https://www.instagram.com/*",
         "https://instagram.com/*"
       ],
-      "js": ["content/instagram-blocker.js"],
+      "js": [
+        "content/instagram-blocker.js"
+      ],
       "run_at": "document_start"
-    },{
-
-    "matches": [
-      "https://www.olx.co.id/*",
-      "https://olx.co.id/*"
-    ],
-
-    "js": ["content/olx-house.js"]
-
-  },{
-  "matches": [
-    "https://www.olx.co.id/*",
-    "https://olx.co.id/*"
-  ],
-  "js": ["content/olx-car.js"]
-},{
-  "matches": [
-    "https://www.olx.co.id/*",
-    "https://olx.co.id/*"
-  ],
-  "js": ["content/olx-car-scraper.js"]
-},{
-  "matches": [
-    "https://www.facebook.com/marketplace/*",
-    "https://facebook.com/marketplace/*",
-    "https://web.facebook.com/marketplace/*"
-  ],
-  "js": ["content/facebook-marketplace-scraper.js"]
-},{
-  "matches": [
-    "https://www.facebook.com/marketplace/item/*",
-    "https://facebook.com/marketplace/item/*",
-    "https://web.facebook.com/marketplace/item/*"
-  ],
-  "js": ["content/facebook-marketplace-detail-scraper.js"]
-},{
-  "matches": [
-    "https://www.rumah123.com/*",
-    "https://rumah123.com/*"
-  ],
-  "js": ["dist/content/rumah123.js"]
-},{
-  "matches": [
-    "https://www.pinhome.id/*",
-    "https://pinhome.id/*"
-  ],
-  "js": ["content/pinhome-house.js"]
-}
+    },
+    {
+      "matches": [
+        "https://www.olx.co.id/*",
+        "https://olx.co.id/*"
+      ],
+      "js": [
+        "content/olx-house.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.olx.co.id/*",
+        "https://olx.co.id/*"
+      ],
+      "js": [
+        "content/olx-car.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.olx.co.id/*",
+        "https://olx.co.id/*"
+      ],
+      "js": [
+        "content/olx-car-scraper.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/marketplace/*",
+        "https://facebook.com/marketplace/*",
+        "https://web.facebook.com/marketplace/*"
+      ],
+      "js": [
+        "content/facebook-marketplace-scraper.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.facebook.com/marketplace/item/*",
+        "https://facebook.com/marketplace/item/*",
+        "https://web.facebook.com/marketplace/item/*"
+      ],
+      "js": [
+        "content/facebook-marketplace-detail-scraper.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.rumah123.com/*",
+        "https://rumah123.com/*"
+      ],
+      "js": [
+        "dist/content/rumah123.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.pinhome.id/*",
+        "https://pinhome.id/*"
+      ],
+      "js": [
+        "content/pinhome-house.js"
+      ]
+    }
   ]
 }

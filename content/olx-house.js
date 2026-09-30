@@ -393,7 +393,7 @@
     title.textContent = "Lokasi";
 
     const toggle = document.createElement("span");
-    toggle.textContent = "—";
+    toggle.textContent = "— 0.1";
     toggle.style.cursor = "pointer";
     toggle.style.fontSize = "14px";
     toggle.style.userSelect = "none";
