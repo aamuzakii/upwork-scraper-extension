@@ -132,6 +132,9 @@
     '[data-aut-id="seo-footer-qna"]',
     '[data-aut-id="seo-footer-widget"]',
     '[data-aut-id="footer"]',
+    '[data-aut-id="baxter-ads-results-bottom"]',
+    '[title="lamudi-branding"]',
+    ".Rn9ll",
   ];
 
   function hideAdComponents() {
